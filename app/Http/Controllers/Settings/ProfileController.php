@@ -53,8 +53,8 @@ class ProfileController extends Controller
         
         if ($request->hasFile('photo_url')) {
             $file = $request->file('photo_url');
-            $path = $file->store('profile-photos', 'public');
-            $user->photo_url = env('APP_URL') . '/storage/' . $path;
+            $path = $file->store('profile-photos', 'r2');
+            $user->photo_url = env('AWS_URL') . '/' . $path;
         }
 
         $user->save();
