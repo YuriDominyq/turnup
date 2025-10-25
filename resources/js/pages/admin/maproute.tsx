@@ -68,7 +68,7 @@ export default function MapRoute() {
 
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie', { withCredentials: true })
+        axios.get('https://turnup-main-17rtje.laravel.cloud/sanctum/csrf-cookie', { withCredentials: true })
             .then(() => console.log('CSRF cookie set'))
             .catch(err => console.error(err));
     }, []);
@@ -136,7 +136,7 @@ export default function MapRoute() {
 
         try {
 
-            await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
+            await axios.get("https://turnup-main-17rtje.laravel.cloud/sanctum/csrf-cookie", { withCredentials: true });
 
             const body = {
                 first_terminal: firstTerminal,
@@ -146,7 +146,7 @@ export default function MapRoute() {
                 color: routeColor,
             }
 
-            const response = await axios.post<BackendRoute>("http://127.0.0.1:8000/routes", body, { withCredentials: true });
+            const response = await axios.post<BackendRoute>("https://turnup-main-17rtje.laravel.cloud/routes", body, { withCredentials: true });
 
             let polyline: LatLng[] = [];
 
@@ -194,7 +194,7 @@ export default function MapRoute() {
 
     const handleDelete = async (id: number) => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/routes/${id}`, { withCredentials: true })
+            await axios.delete(`https://turnup-main-17rtje.laravel.cloud/routes/${id}`, { withCredentials: true })
             setRoutes((prev) => prev.filter((r) => r.id !== id))
 
             if (selectedRoute?.id === id) {

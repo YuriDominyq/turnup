@@ -30,7 +30,7 @@ export default function TabAnalytics() {
 
     const fetchLogs = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/system-logs");
+            const response = await axios.get("https://turnup-main-17rtje.laravel.cloud/api/system-logs");
             const fetchedLogs: SystemLog[] = response.data.systemLogs;
 
             if (fetchedLogs.length > 0 && fetchedLogs[0].id !== lastLogId) {
