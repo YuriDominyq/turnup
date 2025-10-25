@@ -19,6 +19,14 @@ class CorsMiddleware
             'http://127.0.0.1:5173',
             'https://turnup-main-17rtje.laravel.cloud',
          ];
+
+         $origin = $request->headers->get('Origin');
+
+         if (in_array($origin, $allowedOrigin)) {
+            $allowedOrigin = $origin;
+        } else {
+            $allowedOrigin = '';
+        }
    
         if ($request->getMethod() === 'OPTIONS') {
             return response()->noContent(204)
