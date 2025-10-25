@@ -74,7 +74,7 @@ export default function DriverList({ filteredDrivers, getStatusBadge, onUpdateDr
                         <div key={driver.drivers_id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50">
                             <div className="flex items-center space-x-4">
                                 <Avatar className="h-12 w-12">
-                                    <AvatarImage src={driver.avatar_url || `/api/placeholder/48/48`} />
+                                    <AvatarImage src={driver.avatar_url} />
                                     <AvatarFallback className="bg-primary text-primary-foreground">
                                         {getInitials(driver.first_name, driver.last_name)}
                                     </AvatarFallback>
