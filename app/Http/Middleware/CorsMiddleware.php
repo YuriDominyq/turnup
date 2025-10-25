@@ -15,7 +15,7 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-         $allowedOrigin = 'http://127.0.0.1:5173';
+         $allowedOrigin = 'https://turnup-main-17rtje.laravel.cloud';
    
         if ($request->getMethod() === 'OPTIONS') {
             return response()->noContent(204)
