@@ -58,7 +58,7 @@ class OperatorController extends Controller
             'create'
         );
 
-        return redirect()->route('operators.index')->with('success', 'Operator created successfully.');
+        return redirect()->route('admin.operators.index')->with('success', 'Operator created successfully.');
     }
 
     public function update(Request $request, Admin $operator)
@@ -80,7 +80,7 @@ class OperatorController extends Controller
         );
 
 
-        return redirect()->route('operators.index')->with('success', 'Operator updated successfully.');
+        return redirect()->route('admin.operators.index')->with('success', 'Operator updated successfully.');
     }
 
     public function destroy(Admin $operator)
@@ -96,6 +96,6 @@ class OperatorController extends Controller
             'delete'
         );
 
-        return redirect()->route('operators.index')->with('success', 'Operator deleted successfully');
+        return redirect()->route('admin.operators.index')->with('success', 'Operator deleted successfully');
     }
 }

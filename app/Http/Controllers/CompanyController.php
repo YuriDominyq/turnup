@@ -53,7 +53,7 @@ class CompanyController extends Controller
         );
 
        return redirect()->route('admin.company.index')
-        ->with('success', 'Company created successfully');
+            ->with('success', 'Company created successfully');
     }
 
     public function update(Request $request, $id)
@@ -79,7 +79,7 @@ class CompanyController extends Controller
         );
 
        return redirect()->route('admin.company.index')
-        ->with('success', 'Company updated successfully');
+          ->with('success', 'Company updated successfully');
     }
 
     public function destroy($id)
@@ -95,6 +95,7 @@ class CompanyController extends Controller
             'delete'
         );
 
-        return response()->json(['message' => 'Company deleted successfully']);
+        return redirect()->route('admin.company.index')
+            ->with('success', 'Company deleted successfully.');
     }
 }
