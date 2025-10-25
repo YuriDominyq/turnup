@@ -9,8 +9,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use League\Flysystem\FilesystemAdapter;
 
 class ProfileController extends Controller
 {
@@ -54,7 +56,12 @@ class ProfileController extends Controller
         if ($request->hasFile('photo_url')) {
             $file = $request->file('photo_url');
             $path = $file->store('profile-photos', 'r2');
-            $user->photo_url = env('AWS_URL') . '/' . $path;
+
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+
+            $disk = Storage::disk('r2');
+
+            $user->photo_url = $disk->url($path);
         }
 
         $user->save();
