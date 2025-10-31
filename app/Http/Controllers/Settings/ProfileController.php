@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use League\Flysystem\FilesystemAdapter;
 
 class ProfileController extends Controller
 {
@@ -63,7 +62,7 @@ class ProfileController extends Controller
                    Storage::disk('r2')->delete($oldPath);
                 }
 
-                $path = Storage::disk('r2')->putFile('profile-photos', $file);
+                $path = Storage::disk('r2')->putFile('profile-photos', $file, 'public');
                 if ($path) {
                 $user->photo_url = rtrim(env('AWS_URL'), '/') . '/' . $path;
                 }
