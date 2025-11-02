@@ -58,14 +58,12 @@ class ProfileController extends Controller
             if ($file->isValid()) {
 
                 if ($user->photo_url) {
-                   $oldPath = str_replace(rtrim(env('AWS_URL'), '/') . '/', '', $user->photo_url);
-                   Storage::disk('r2')->delete($oldPath);
+                    $oldPath = str_replace(env('APP_URL').'/storage/', '', $user->photo_url);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
-                $path = Storage::disk('r2')->putFile('profile-photos', $file, 'public');
-                if ($path) {
-                $user->photo_url = rtrim(env('AWS_URL'), '/') . '/' . $path;
-                }
+                $path = $file->store('profile-photos', 'public');
+                $user->photo_url = env('APP_URL') . '/storage/' . $path;
             }
         }
 
