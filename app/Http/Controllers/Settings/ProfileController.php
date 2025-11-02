@@ -60,14 +60,13 @@ class ProfileController extends Controller
                if ($user->photo_url) {
                     $oldPath = parse_url($user->photo_url, PHP_URL_PATH);
                     $oldPath = ltrim(str_replace('/storage/', '', $oldPath), '/');
-                    Storage::disk('public')->delete($oldPath);
+                    Storage::disk('r2')->delete($oldPath);
                 }
                 
                 $path = $file->store('profile-photos', 'public');
 
-                /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
-                $disk = Storage::disk('public');
-                $user->photo_url = $disk->url($path);
+                $path = Storage::disk('r2')->putFile('profile-photos', $file, 'public');
+                $user->photo_url = Storage::disk('r2')->url($path);
             }
         }
 
