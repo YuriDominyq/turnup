@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommuterController;
 use App\Http\Controllers\DriverAPIController;
 use App\Http\Controllers\DriverCheckInController;
+use App\Http\Controllers\RideController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
 use App\Models\Stop;
@@ -65,4 +66,11 @@ Route::post('/nearby-stop', function(Request $request){
         'nearby_stop' => $stop,
         'route' => $route,
     ]);
+});
+
+Route::prefix('rides')->group(function () {
+    Route::get('/', [RideController::class, 'index']);
+    Route::get('/{ride_id}', [RideController::class, 'show']);
+    Route::post('/start', [RideController::class, 'startRide']);
+    Route::put('/end/{ride_id}', [RideController::class, 'endRide']);
 });

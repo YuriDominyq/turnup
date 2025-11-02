@@ -28,6 +28,11 @@ class Commuter extends Model
 
     protected $hidden = [
         'password',
-        'otp',
+        'otp_code',
     ];
+    
+    public function rides()
+    {
+        return $this->hasMany(Ride::class, 'commuter_id', 'commuter_id');
+    }
 }

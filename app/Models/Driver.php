@@ -86,4 +86,9 @@ class Driver extends Authenticatable
     {
         return $this->hasMany(DriverCheckIn::class, 'driver_id', 'drivers_id');
     }
+
+    public function rides()
+    {
+        return $this->hasMany(Ride::class, 'driver_id', 'drivers_id');
+    }
 }
