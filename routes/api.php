@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('driver/logout', [DriverAPIController::class, 'logout']);
     Route::get('driver/profile', [DriverAPIController::class, 'profile']);
     Route::post('driver/profile/update', [DriverAPIController::class, 'updateProfile']);
+    Route::get('driver/{driver}', [DriverAPIController:: class, 'show']);
 
     Route::prefix('driver-check-ins')->group(function() {
         Route::post('/store', [DriverCheckInController::class, 'store']);

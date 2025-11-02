@@ -81,4 +81,15 @@ class DriverAPIController extends Controller
             'driver' => $driver,
         ]);
     }
+
+    public function show($drivers_id)
+    {
+        $driver = Driver::with('route')->find($drivers_id);
+
+        if(!$driver){
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        return response()->json($driver);
+    }
 }
