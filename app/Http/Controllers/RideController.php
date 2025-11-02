@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ride;
-use App\Models\Driver;
-use App\Models\Commuter;
-use Illuminate\Support\Facades\DB;
 
 class RideController extends Controller
 {
