@@ -16,7 +16,7 @@ class RideController extends Controller
     public function startRide(Request $request)
     {
        $validated = $request->validate([
-            'driver_id' => 'required|string|exists:drivers,driver_id',
+            'driver_id' => 'required|string|exists:drivers,drivers_id',
             'commuter_id' => 'required|string|exists:commuters,commuter_id',
             'route_id' => 'nullable|integer|exists:routes,id',
             'start_stop_id' => 'nullable|integer|exists:stops,id',
