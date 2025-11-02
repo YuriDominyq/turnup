@@ -21,6 +21,17 @@ class RideController extends Controller
             'start_lng' => 'required|numeric',
         ]);
 
+        $existingRide = Ride::where('commuter_id', $validated['commuter_id'])
+                            ->where('status', 'ongoing')
+                            ->first();
+        
+        if($existingRide){
+            return response()->json([
+                'message' => 'Commuter already has an ongoing ride.',
+                'ride' => $existingRide
+            ], 409);
+        }                    
+
         $ride = Ride::create([
             'driver_id' => $validated['driver_id'],
             'commuter_id' => $validated['commuter_id'],
