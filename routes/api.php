@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommuterController;
 use App\Http\Controllers\DriverAPIController;
 use App\Http\Controllers\DriverCheckInController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\RideController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
@@ -74,4 +75,10 @@ Route::prefix('rides')->group(function () {
     Route::get('/{ride_id}', [RideController::class, 'show']);
     Route::post('/start', [RideController::class, 'startRide']);
     Route::put('/end/{ride_id}', [RideController::class, 'endRide']);
+});
+
+Route::prefix('feedback')->group(function (){
+    Route::post('/', [FeedbackController::class, 'store']);
+    Route::get('/', [FeedbackController::class, 'index']);
+    Route::get('/{id}', [FeedbackController::class, 'show']);
 });
