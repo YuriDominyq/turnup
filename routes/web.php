@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\OperatorController;
@@ -41,13 +40,6 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
     Route::get('admin/operators/{operator}/edit', [OperatorController::class, 'edit'])->name('admin.operators.edit');
     Route::put('admin/operators/{operator}', [OperatorController::class, 'update'])->name('admin.operators.update');
     Route::delete('admin/operators/{operator}', [OperatorController::class, 'destroy'])->name('admin.operators.destroy');
-});
-
-Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
-    Route::get('admin/company', [CompanyController::class, 'index'])->name('admin.company.index');
-    Route::post('admin/company', [CompanyController::class, 'store'])->name('admin.company.store');
-    Route::put('admin/company/{company}', [CompanyController::class, 'update'])->name('admin.company.update');
-    Route::delete('admin/company/{company}', [CompanyController::class, 'destroy'])->name('admin.company.destroy');
 });
 
 Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {

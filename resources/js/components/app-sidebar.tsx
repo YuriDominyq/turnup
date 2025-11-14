@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, AlertTriangle, BarChart3, Building, Map, MapIcon, Users } from 'lucide-react';
+import { Activity, AlertTriangle, BarChart3, Map, MapIcon, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 import { AppVersion } from './app-version';
 
@@ -18,11 +18,6 @@ export function AppSidebar() {
             title: 'Dashboard',
             href: '/admin/dashboard',
             icon: BarChart3,
-        },
-        {
-            title: 'Company',
-            href: '/admin/company',
-            icon: Building,
         },
         {
             title: 'Operators',
