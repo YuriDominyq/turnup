@@ -69,7 +69,7 @@ export default function CommuterProblems() {
             <div className="container mx-auto py-8 px-4">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="p-2.5 bg-primary rounded-xl">
-                        <AlertCircle className="h-6 w-6 text-primary-foreground" />
+                        <MessageSquare className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <div>
                         <Text size='xl' weight='bold'>Commuter Feedbacks</Text>
