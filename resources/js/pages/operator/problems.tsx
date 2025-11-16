@@ -18,13 +18,10 @@ export default function CommuterProblems() {
     const [searchQuery, setSearchQuery] = useState("");
     const [mappedReports, setMappedReports] = useState<Report[]>([]);
     const [activeTab, setActiveTab] = useState("all");
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get<FeedbackResponse[]>('/api/feedback')
             .then(res => {
-                ;
-                setLoading(false);
 
                 const reports: Report[] = res.data.map(fb => {
                     const severity = fb.rating >= 4 ? 'high' : fb.rating === 3 ? 'medium' : 'low';
@@ -52,7 +49,6 @@ export default function CommuterProblems() {
             })
             .catch(err => {
                 console.error(err);
-                setLoading(false);
             })
     }, []);
 
@@ -66,8 +62,6 @@ export default function CommuterProblems() {
     const newCount = mappedReports.filter(r => r.status === "new").length;
     const criticalCount = mappedReports.filter(r => r.severity === "high").length;
     const inProgressCount = mappedReports.filter(r => r.status === "in-progress").length;
-
-    if (loading) return <p className="text-center py-12">Loading feedbacks...</p>;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

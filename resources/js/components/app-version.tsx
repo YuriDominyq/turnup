@@ -13,7 +13,7 @@ export function AppVersion() {
 
     return (
         <Text size="xs" className="mt-2 flex items-center justify-center">
-            v{version} TurnUp • Laravel + React
+            v{version} TurnUp
         </Text>
     );
 }
