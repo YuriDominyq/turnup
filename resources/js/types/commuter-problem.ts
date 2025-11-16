@@ -1,23 +1,32 @@
-import { ReactNode } from 'react';
-
-export interface StatsCardProps {
-    title: string;
-    value: string | number;
-    subtitle: string;
-    icon: ReactNode;
-}
-
 export interface Report {
-    id: number;
+    id: string;
     commuterName: string;
     commuterContact: string;
     subject: string;
     description: string;
     route: string;
-    busNumber: string;
+    startStop: string;
+    endStop: string;
     incidentDate: string;
-    severity: string;
-    status: string;
+    severity: 'low' | 'medium' | 'high';
+    status: 'new' | 'in-progress' | 'resolved';
     category: string;
     timeAgo: string;
+}
+
+export interface FeedbackResponse {
+    feedback_id: string;
+    rating: number;
+    comment: string | null;
+    created_at: string;
+    commuter?: {
+        first_name: string;
+        last_name: string;
+        phone: string;
+    };
+    ride?: {
+        route?: { name: string };
+        startStop?: { name: string };
+        endStop?: { name: string };
+    };
 }
