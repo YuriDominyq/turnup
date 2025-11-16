@@ -30,7 +30,7 @@ export default function WeeklyPerformanceChart({ data }: WeeklyPerformanceChartP
                                 <XAxis dataKey="day" />
                                 <YAxis />
                                 <Tooltip />
-                                <Line type="monotone" dataKey="completedTrips" stroke="#3b82f6" strokeWidth={2} />
+                                <Line type="monotone" dataKey="checkIns" stroke="#3b82f6" strokeWidth={2} />
                             </LineChart>
                         </ResponsiveContainer>
                     </TabsContent>
