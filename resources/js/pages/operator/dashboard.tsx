@@ -16,13 +16,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 // Mock data for demonstration
 const weeklyData = [
-    { day: 'Mon', activeDrivers: 45, completedTrips: 89, revenue: 2450 },
-    { day: 'Tue', activeDrivers: 52, completedTrips: 102, revenue: 2890 },
-    { day: 'Wed', activeDrivers: 48, completedTrips: 95, revenue: 2650 },
-    { day: 'Thu', activeDrivers: 56, completedTrips: 118, revenue: 3200 },
-    { day: 'Fri', activeDrivers: 61, completedTrips: 134, revenue: 3750 },
-    { day: 'Sat', activeDrivers: 58, completedTrips: 142, revenue: 3890 },
-    { day: 'Sun', activeDrivers: 47, completedTrips: 98, revenue: 2980 },
+    { day: 'Mon', activeDrivers: 45, checkIns: 89 },
+    { day: 'Tue', activeDrivers: 52, checkIns: 102 },
+    { day: 'Wed', activeDrivers: 48, checkIns: 95 },
+    { day: 'Thu', activeDrivers: 56, checkIns: 118 },
+    { day: 'Fri', activeDrivers: 61, checkIns: 134 },
+    { day: 'Sat', activeDrivers: 58, checkIns: 142 },
+    { day: 'Sun', activeDrivers: 47, checkIns: 98 },
 ];
 
 const driverStatusData = [

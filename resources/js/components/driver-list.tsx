@@ -115,7 +115,6 @@ export default function DriverList({ filteredDrivers, getStatusBadge, onUpdateDr
                                             <Star className="h-3 w-3 text-yellow-500" />
                                             <span className="text-sm font-medium">{driver.rating}</span>
                                         </div>
-                                        <div className="text-xs text-muted-foreground">{driver.total_trips} trips</div>
                                     </div>
                                 )}
 

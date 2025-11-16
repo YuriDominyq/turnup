@@ -6,8 +6,7 @@ interface WeeklyPerformanceChartProps {
     data: {
         day: string;
         activeDrivers: number;
-        completedTrips: number;
-        revenue: number
+        checkIns: number;
     }[]
 }
 
@@ -19,12 +18,12 @@ export default function WeeklyPerformanceChart({ data }: WeeklyPerformanceChartP
                 <CardDescription>Driver activity and trip completion trends</CardDescription>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue="trips" className="w-full">
+                <Tabs defaultValue="checkins" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="trips">Trips</TabsTrigger>
+                        <TabsTrigger value="checkins">Check-In</TabsTrigger>
                         <TabsTrigger value="drivers">Drivers</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="trips" className="mt-4">
+                    <TabsContent value="checkins" className="mt-4">
                         <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={data}>
                                 <CartesianGrid strokeDasharray="3 3" />
