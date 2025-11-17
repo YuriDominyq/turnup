@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ride;
+use App\Models\Stop;
 
 class RideController extends Controller
 {
@@ -30,13 +31,23 @@ class RideController extends Controller
                 'message' => 'Commuter already has an ongoing ride.',
                 'ride' => $existingRide
             ], 409);
-        }                    
+        }
+        
+        $nearestStartStop = null;
+        if (!empty($validated['route_id'])) {
+            $nearestStartStop = Stop::where('route_id', $validated['route_id'])
+                ->orderByRaw("power(lat - ?, 2) + power(lng - ?, 2) ASC", [
+                    $validated['start_lat'],
+                    $validated['start_lng']
+                ])
+                ->first();
+        }
 
         $ride = Ride::create([
             'driver_id' => $validated['driver_id'],
             'commuter_id' => $validated['commuter_id'],
             'route_id' => $validated['route_id'] ?? null,
-            'start_stop_id' => $validated['start_stop_id'] ?? null,
+            'start_stop_id' => $nearestStartStop->id ?? null,
             'start_lat' => $validated['start_lat'],
             'start_lng' => $validated['start_lng'],
             'status' => 'ongoing',
@@ -64,11 +75,22 @@ class RideController extends Controller
         if($ride->status === 'completed'){
             return response()->json(['message' => 'Ride already completed.'], 400);
         }
+        
+        $nearestEndStop = null;
+        if ($ride->route_id) {
+            $nearestEndStop = Stop::where('route_id', $ride->route_id)
+                ->orderByRaw("power(lat - ?, 2) + power(lng - ?, 2) ASC", [
+                    $validated['end_lat'],
+                    $validated['end_lng']
+                ])
+                ->first();
+        }
+
 
         $ride->update([
             'end_lat' => $validated['end_lat'],
             'end_lng' => $validated['end_lng'],
-            'end_stop_id' => $validated['end_stop_id'] ?? null,
+            'end_stop_id' => $nearestEndStop->id ?? null,
             'status' => 'completed',
         ]);
 
