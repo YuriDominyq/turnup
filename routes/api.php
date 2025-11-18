@@ -19,6 +19,8 @@ Route::get('routes', [RouteController::class, 'index']);
 Route::get('stops/search', [StopController::class, 'search']);
 Route::get('commuter/driver-route/{driver}', [DriverAPIController::class, 'driverRouteForCommuter']);
 Route::put('/commuter/{commuter_id}/update', [CommuterController::class, 'updateProfile']);
+Route::put('/commuter/{commuter_id}/change-password', [CommuterController::class, 'changePassword']);
+
 
 Route::get('/system-logs', function () {
     return response()->json([

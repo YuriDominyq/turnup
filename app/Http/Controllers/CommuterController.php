@@ -120,4 +120,27 @@ class CommuterController extends Controller
             'commuter' => $commuter
         ]);
     }
+
+    public function changePassword(Request $request, $commuter_id)
+    {
+         $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $commuter = Commuter::where('commuter_id', $commuter_id)->first();
+
+        if(!$commuter){
+            return response()->json(['message' => 'Commuter not found.'], 404);
+        }
+
+        if(!Hash::check($request->current_password, $commuter->password)){
+            return response()->json(['message' => 'Current password is incorrect.'], 400);
+        }
+
+        $commuter->password = Hash::make($request->new_password);
+        $commuter->save();
+
+        return response()->json(['message' => 'Password changed successfully.']);
+    }
 }
