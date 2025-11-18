@@ -1,5 +1,7 @@
 <?php
 
+header("Cache-Control: public, max-age=3600, must-revalidate");
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
