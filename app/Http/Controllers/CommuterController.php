@@ -88,4 +88,36 @@ class CommuterController extends Controller
             'commuter' => $commuter,
         ]);
     }
+
+    public function updateProfile(Request $request, $commuter_id)
+    {
+        $commuter = Commuter::where('commuter_id', $commuter_id)->first();
+
+        if(!$commuter) {
+            return response()->json(['message' => 'Commuter not found.'], 404);
+        }
+
+        $request->validate([
+            'first_name' => 'sometimes|required|string|max:255',
+            'last_name' => 'sometimes|required|string|max:255',
+            'phone' => 'sometimes|nullable|string|max:15|unique:commuters,phone,' . $commuter->id,
+            'email' => 'sometimes|required|string|email|max:255|unique:commuters,email,' . $commuter->id,
+            'photo' => 'sometimes|nullable|string',
+        ]);
+
+        $commuter->fill($request->only([
+            'first_name',
+            'last_name',
+            'phone',
+            'email',
+            'photo'
+        ]));
+
+        $commuter->save();
+
+        return response()->json([
+            'message' => 'Profile updated successfully.',
+            'commuter' => $commuter
+        ]);
+    }
 }
