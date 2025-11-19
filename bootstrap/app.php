@@ -22,12 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\NoCache::class,
+            NoCache::class,
         ]);
 
          $middleware->append(CorsMiddleware::class);
-
-         $middleware->append(NoCache::class);
 
         $middleware->alias([
         'role' => \App\Http\Middleware\RoleMiddleware::class,
