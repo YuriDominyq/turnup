@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RouteController;
 use App\Http\Middleware\CorsMiddleware;
+use App\Http\Middleware\NoCache;
 
 Route::middleware(['auth', 'verified', 'role:superadmin', CorsMiddleware::class])->group(function () {
     Route::post('routes', [RouteController::class, 'store']);
@@ -23,7 +24,7 @@ Route::get('/version', function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
     Route::get('admin/dashboard', function () {
         return Inertia::render('admin/dashboard');
     })->name('admin.dashboard');
@@ -33,7 +34,7 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
     })->name('admin.maproute');
 });
 
-Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
     Route::get('admin/operators', [OperatorController::class, 'index'])->name('admin.operators.index');
     Route::get('admin/operators/create', [OperatorController::class, 'create'])->name('admin.operators.create');
     Route::post('admin/operators', [OperatorController::class, 'store'])->name('admin.operators.store');
@@ -42,7 +43,7 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
     Route::delete('admin/operators/{operator}', [OperatorController::class, 'destroy'])->name('admin.operators.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:operator'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(function () {
     Route::get('operator/dashboard', function () {
         return Inertia::render('operator/dashboard');
     })->name('operator.dashboard');
