@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
 
 interface Operator {
@@ -49,13 +48,6 @@ export default function OperatorRow({ operator }: OperatorRowProps) {
                 <Badge className="text-xs bg-green-100 text-green-700 hover:bg-green-100">
                     Active
                 </Badge>
-            </div>
-
-            {/* Actions */}
-            <div className="md:col-span-1 flex items-center justify-end">
-                <Button variant="ghost" size="sm">
-                    ⋯
-                </Button>
             </div>
         </div>
     )
