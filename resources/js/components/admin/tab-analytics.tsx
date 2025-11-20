@@ -22,9 +22,6 @@ export default function TabAnalytics() {
 
     const tabs: { id: TabType; label: string }[] = [
         { id: 'overview', label: 'Overview' },
-        { id: 'checkins', label: 'Check-ins' },
-        { id: 'terminals', label: 'Terminals' },
-        { id: 'drivers', label: 'Drivers' },
         { id: 'reports', label: 'Reports' },
     ];
 
