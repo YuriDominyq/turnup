@@ -11,6 +11,7 @@ import axios from 'axios';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import DriversPerRouteChart from '@/components/driver-per-route-chart';
+import { Status } from '@/types/status';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,23 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 // Mock data for demonstration (fallback)
 
-const driverStatusData = [
-    { name: 'On Duty', value: 47, color: '#10b981' },
-    { name: 'En Route', value: 32, color: '#3b82f6' },
-    { name: 'Available', value: 15, color: '#8b5cf6' },
-    { name: 'Off Duty', value: 23, color: '#6b7280' },
-];
-
 interface DashboardData {
     topDrivers: Driver[];
     driversPerRoute: { route_name: string; driverCount: number }[];
-    driverStatus?: typeof driverStatusData;
+    driverStatus: Status[];
 }
 
 export default function Dashboard() {
     const [data, setData] = useState<DashboardData>({
         topDrivers: [],
-        driversPerRoute: [] as { route_name: string; driverCount: number }[],
+        driversPerRoute: [],
+        driverStatus: [],
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -49,14 +44,16 @@ export default function Dashboard() {
                 setError(null);
 
                 // Fetch all dashboard data in parallel
-                const [topDriversRes, driversPerRouteRes] = await Promise.all([
+                const [topDriversRes, driversPerRouteRes, driverStatusRes] = await Promise.all([
                     axios.get("/api/analytics/top-drivers"),
                     axios.get("/api/analytics/drivers-per-route"),
+                    axios.get("/api/analytics/driver-status"),
                 ]);
 
                 setData({
                     topDrivers: topDriversRes.data,
                     driversPerRoute: driversPerRouteRes.data,
+                    driverStatus: driverStatusRes.data,
                 });
             } catch (err) {
                 console.error("Failed to fetch dashboard data:", err);
@@ -96,7 +93,7 @@ export default function Dashboard() {
 
                     {/* Driver Status Distribution */}
                     <div className="xl:col-span-1">
-                        <DriverStatusDistribution data={data.driverStatus || driverStatusData} />
+                        <DriverStatusDistribution data={data.driverStatus} />
                     </div>
                 </div>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\CommuterController;
 use App\Http\Controllers\DriverAPIController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverPerRouteController;
+use App\Http\Controllers\DriverStatusController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\RideController;
 use App\Http\Controllers\RouteController;
@@ -92,3 +93,4 @@ Route::prefix('feedback')->group(function (){
 // Analytics
 Route::get('/analytics/top-drivers', [TopDriverController::class, 'topDrivers']);
 Route::get('/analytics/drivers-per-route', [DriverPerRouteController::class, 'driversPerRoute']);
+Route::get('/analytics/driver-status', [DriverStatusController::class, 'statusDistribution']);
