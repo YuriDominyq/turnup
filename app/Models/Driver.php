@@ -35,6 +35,11 @@ class Driver extends Authenticatable
         'franchise_url',
     ];
 
+    protected $casts = [
+        'rating' => 'float',
+        'total_trips' => 'integer',
+    ];
+
     protected $hidden = ['password'];
 
     protected static function boot()

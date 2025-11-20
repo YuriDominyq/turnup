@@ -82,7 +82,7 @@ export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
                             <div className="flex items-center gap-1.5 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
                                 <Star className={`h-4 w-4 fill-current ${getRatingColor(d.rating)}`} />
                                 <p className={`text-sm font-bold ${getRatingColor(d.rating)}`}>
-                                    {d.rating.toFixed(2)}
+                                    {typeof d.rating === 'string' ? parseFloat(d.rating).toFixed(2) : d.rating.toFixed(2)}
                                 </p>
                             </div>
                         </div>
