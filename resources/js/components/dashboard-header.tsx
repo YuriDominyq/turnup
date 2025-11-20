@@ -52,6 +52,7 @@ export default function DashboardHeader() {
 
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const blob = new Blob([wbout], { type: "application/octet-stream" });
+
             // Send file to Laravel backend
             const formData = new FormData();
             formData.append('file', new File([blob], `analytics_${Date.now()}.xlsx`));
