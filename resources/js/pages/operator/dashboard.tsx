@@ -1,7 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import KeyMetrics from '@/components/key-metrics';
 import DashboardHeader from '@/components/dashboard-header';
 import DriverStatusDistribution from '@/components/driver-status-distribution';
 import TopDrivers from '@/components/top-drivers';
@@ -80,9 +79,6 @@ export default function Dashboard() {
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
-
-                {/* Key Metrics */}
-                <KeyMetrics />
 
                 {/* Charts and Analytics */}
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
