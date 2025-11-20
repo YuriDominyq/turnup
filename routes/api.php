@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminKPIController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommuterController;
 use App\Http\Controllers\DriverAPIController;
@@ -94,3 +95,4 @@ Route::prefix('feedback')->group(function (){
 Route::get('/analytics/top-drivers', [TopDriverController::class, 'topDrivers']);
 Route::get('/analytics/drivers-per-route', [DriverPerRouteController::class, 'driversPerRoute']);
 Route::get('/analytics/driver-status', [DriverStatusController::class, 'statusDistribution']);
+Route::get('/admin/kpi', [AdminKPIController::class, 'getKPIData']);

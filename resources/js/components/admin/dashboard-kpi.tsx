@@ -1,43 +1,46 @@
-import { Car, Clock, TrendingUp, Users } from "lucide-react";
-import { KPICard, kpiData } from "../kpi-card";
+import { TrendingUp, Users } from "lucide-react";
+import { KPICard } from "../kpi-card";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function DashboardKPI() {
+
+    const [kpiData, setKpiData] = useState({
+        totalUsers: 0,
+        totalRoutes: 0,
+    });
+
+    useEffect(() => {
+        axios.get('/api/admin/kpi')
+            .then(res => {
+                setKpiData({
+                    totalUsers: res.data.totalCommuters,
+                    totalRoutes: res.data.totalRoutes
+                });
+            })
+            .catch(err => console.error(err));
+    }, []);
+
+    const userGoal = 2000;
+    const routeGoal = 50;
+
+    const progressUsers = Math.round((kpiData.totalUsers / userGoal) * 100);
+    const progressRoutes = Math.round((kpiData.totalRoutes / routeGoal) * 100);
+
     return (
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
             <KPICard
                 title="Total Users"
                 value={kpiData.totalUsers}
                 icon={Users}
-                trend="up"
-                trendValue="+12%"
-                progress={75}
+                progress={progressUsers}
             />
 
             <KPICard
-                title="Total Drivers"
-                value={kpiData.totalDrivers}
-                icon={Car}
-                trend="up"
-                trendValue="+8%"
-                progress={80}
-            />
-
-            <KPICard
-                title="Active Terminals"
-                value={kpiData.activeTerminals}
+                title="Total Routes"
+                value={kpiData.totalRoutes}
                 icon={TrendingUp}
-                trend="up"
-                trendValue="+2%"
-                progress={85}
-            />
-
-            <KPICard
-                title="Avg Response Time"
-                value={`${kpiData.avgResponseTime}s`}
-                icon={Clock}
-                trend="down"
-                trendValue="-15%"
-                progress={95}
+                progress={progressRoutes}
             />
         </div>
     )

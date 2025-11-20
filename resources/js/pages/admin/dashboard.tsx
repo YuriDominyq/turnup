@@ -1,4 +1,5 @@
 import DashboardHeader from '@/components/admin/dashboard-header';
+import DashboardKPI from '@/components/admin/dashboard-kpi';
 import TabAnalytics from '@/components/admin/tab-analytics';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -19,6 +20,8 @@ export default function Dashboard() {
 
                 {/* Header Section */}
                 <DashboardHeader />
+
+                <DashboardKPI />
 
                 <TabAnalytics />
 
