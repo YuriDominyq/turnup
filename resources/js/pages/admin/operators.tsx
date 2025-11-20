@@ -31,7 +31,7 @@ export default function Operators({ operators }: OperatorProps) {
     const [open, setOpen] = useState(false)
 
     const handleSubmit = (data: OperatorFormData) => {
-        Inertia.post("/operators", { ...data }, {
+        Inertia.post("/admin/operators", { ...data }, {
             onSuccess: () => setOpen(false),
             onError: (errors) => console.log(errors)
         })
