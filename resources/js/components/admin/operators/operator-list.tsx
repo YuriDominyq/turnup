@@ -52,7 +52,6 @@ export default function OperatorList({ operators, onAdd }: ListProps) {
                             <div className="col-span-5">Operator</div>
                             <div className="col-span-4">Email</div>
                             <div className="col-span-2">Status</div>
-                            <div className="col-span-1">Actions</div>
                         </div>
 
                         <div className="space-y-3">
