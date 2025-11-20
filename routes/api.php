@@ -8,6 +8,7 @@ use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverPerRouteController;
 use App\Http\Controllers\DriverStatusController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RideController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
@@ -96,3 +97,7 @@ Route::get('/analytics/top-drivers', [TopDriverController::class, 'topDrivers'])
 Route::get('/analytics/drivers-per-route', [DriverPerRouteController::class, 'driversPerRoute']);
 Route::get('/analytics/driver-status', [DriverStatusController::class, 'statusDistribution']);
 Route::get('/admin/kpi', [AdminKPIController::class, 'getKPIData']);
+
+// Reports
+Route::get('/reports', [ReportsController::class, 'index']);
+Route::post('/reports', [ReportsController::class, 'store']);

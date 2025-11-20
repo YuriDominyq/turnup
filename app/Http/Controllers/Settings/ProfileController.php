@@ -43,30 +43,30 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         /** @var \Illuminate\Http\Request $request */
-        
         $user = $request->user();
 
         $user->fill($request->validated());
 
-        if($user->isDirty('email')){
+        if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
-        
+
         if ($request->hasFile('photo_url')) {
             $file = $request->file('photo_url');
-            
-            if ($file->isValid()) {
 
-               if ($user->photo_url) {
+            if ($file->isValid()) {
+                // Delete old photo if exists
+                if ($user->photo_url) {
                     $oldPath = parse_url($user->photo_url, PHP_URL_PATH);
                     $oldPath = ltrim(str_replace('/storage/', '', $oldPath), '/');
                     Storage::disk('public')->delete($oldPath);
                 }
-                
+
+                // Store new photo
                 $path = $file->store('profile-photos', 'public');
 
-               $path = $request->file('photo_url')->store('profile-photos', 'public');
-               $user->photo_url = env('APP_URL') . '/storage/' . $path;
+                // Save full URL
+                $user->photo_url = env('APP_URL') . '/storage/' . $path;
             }
         }
 
@@ -80,6 +80,7 @@ class ProfileController extends Controller
 
         return to_route('profile.edit');
     }
+
 
     /**
      * Delete the user's account.

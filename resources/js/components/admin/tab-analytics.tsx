@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import axios from "axios";
 import { SystemLog } from "@/types/systemlog";
 import FullLogsModal from "./full-logs-modal";
+import TabsReports from "../tabs-reports";
 
 type TabType = 'overview' | 'checkins' | 'terminals' | 'drivers' | 'reports';
 
@@ -217,19 +218,7 @@ export default function TabAnalytics() {
                     </div>
                 )}
 
-                {activeTab !== 'overview' && (
-                    <Card>
-                        <CardContent className="flex items-center justify-center min-h-[400px]">
-                            <div className="text-center space-y-4">
-                                <div className="text-4xl">🚧</div>
-                                <h3 className="text-lg font-semibold">Coming Soon</h3>
-                                <p className="text-sm text-muted-foreground max-w-md">
-                                    The {tabs.find(t => t.id === activeTab)?.label} section is currently under development.
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                )}
+                {activeTab === 'reports' && <TabsReports />}
 
                 {isModalOpen && <FullLogsModal logs={logs} onClose={() => setIsModalOpen(false)} />}
             </div>
