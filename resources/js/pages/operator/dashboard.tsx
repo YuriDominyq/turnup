@@ -5,6 +5,10 @@ import KeyMetrics from '@/components/key-metrics';
 import DashboardHeader from '@/components/dashboard-header';
 import WeeklyPerformanceChart from '@/components/weekly-performance-chart';
 import DriverStatusDistribution from '@/components/driver-status-distribution';
+import TopDrivers from '@/components/top-drivers';
+import { Driver } from '@/types/driver';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -33,6 +37,14 @@ const driverStatusData = [
 ];
 
 export default function Dashboard() {
+    const [topDrivers, setTopDrivers] = useState<Driver[]>([]);
+
+    useEffect(() => {
+        axios.get("/analytics/top-drivers")
+            .then(res => setTopDrivers(res.data))
+            .catch(err => console.error("Failed to fetch top drivers:", err));
+    }, [])
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -52,6 +64,8 @@ export default function Dashboard() {
                     {/* Driver Status Distribution */}
                     <DriverStatusDistribution data={driverStatusData} />
                 </div>
+
+                <TopDrivers drivers={topDrivers} />
             </div>
         </AppLayout>
     );

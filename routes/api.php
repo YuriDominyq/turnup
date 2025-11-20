@@ -8,6 +8,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\RideController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
+use App\Http\Controllers\TopDriverController;
 use App\Models\Stop;
 use App\Models\SystemLog;
 use Illuminate\Http\Request;
@@ -86,3 +87,6 @@ Route::prefix('feedback')->group(function (){
     Route::get('/', [FeedbackController::class, 'index']);
     Route::get('/{id}', [FeedbackController::class, 'show']);
 });
+
+// Analytics
+Route::get('/analytics/top-drivers', [TopDriverController::class, 'topDrivers']);
