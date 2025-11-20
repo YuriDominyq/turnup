@@ -1,9 +1,66 @@
-import { RefreshCw, Truck } from "lucide-react";
+import { Download, RefreshCw, Truck } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Text } from "./ui/text";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { DriversPerRoute, DriverStatus, TopDriver } from "@/types/analytics";
+import { toast } from "react-toastify";
 
 export default function DashboardHeader() {
+
+    const exportAnalyticsToExcel = async () => {
+        try {
+            const [topDriversRes, driversPerRouteRes, driverStatusRes] = await Promise.all([
+                fetch('/api/analytics/top-drivers'),
+                fetch('/api/analytics/drivers-per-route'),
+                fetch('/api/analytics/driver-status')
+            ]);
+
+            const [topDrivers, driversPerRoute, driverStatus] = await Promise.all([
+                topDriversRes.json(),
+                driversPerRouteRes.json(),
+                driverStatusRes.json()
+            ]);
+
+            const workbook = XLSX.utils.book_new();
+
+            //Top Drivers Sheet
+            const topDriversData = topDrivers.map((d: TopDriver) => ({
+                ID: d.drivers_id,
+                Name: `${d.first_name} ${d.last_name}`,
+                Rating: d.rating
+            }));
+
+            const ws1 = XLSX.utils.json_to_sheet(topDriversData);
+            XLSX.utils.book_append_sheet(workbook, ws1, "Top Drivers");
+
+            // Drivers Per Route sheet
+            const driversPerRouteData = driversPerRoute.map((r: DriversPerRoute) => ({
+                Route: r.route_name,
+                "Driver Count": r.driverCount
+            }));
+            const ws2 = XLSX.utils.json_to_sheet(driversPerRouteData);
+            XLSX.utils.book_append_sheet(workbook, ws2, "Drivers Per Route");
+
+            // Driver Status Distribution sheet
+            const driverStatusData = driverStatus.map((s: DriverStatus) => ({
+                Status: s.name,
+                Count: s.value
+            }));
+            const ws3 = XLSX.utils.json_to_sheet(driverStatusData);
+            XLSX.utils.book_append_sheet(workbook, ws3, "Driver Status");
+
+            const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const blob = new Blob([wbout], { type: "application/octet-stream" });
+            saveAs(blob, "analytics_report.xlsx");
+
+            toast.success("Analytics exported successfully!");
+        } catch (error) {
+            console.error("Export failed", error);
+            toast.error("Failed to export analytics. Please try again.");
+        }
+    }
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -24,6 +81,10 @@ export default function DashboardHeader() {
                     <div className='w-2 h-2 bg-primary-foreground rounded-full mr-2 animate-pulse' />
                     Live Data
                 </Badge>
+                <Button variant="outline" size="sm" onClick={exportAnalyticsToExcel}>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                </Button>
                 <Button variant="outline" size="sm">
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh
