@@ -26,9 +26,24 @@ export default function TabsReports() {
 
     return (
         <div className="space-y-3">
+            <div className="flex justify-end">
+                <button
+                    onClick={fetchReports}
+                    className="px-3 py-1 bg-primary text-white rounded"
+                >
+                    Refresh
+                </button>
+            </div>
+
             {reports.map((report) => (
                 <div key={report.id} className="flex justify-between p-3 bg-muted rounded-lg">
-                    <span>{report.filename}</span>
+                    <div>
+                        <span className="font-medium">{report.filename}</span>
+                        <br />
+                        <span className="text-xs text-muted-foreground">
+                            {new Date(report.created_at).toLocaleString()}
+                        </span>
+                    </div>
                     <a
                         href={report.url}
                         target="_blank"

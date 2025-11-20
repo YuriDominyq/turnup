@@ -3,7 +3,6 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Text } from "./ui/text";
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 import { DriversPerRoute, DriverStatus, TopDriver } from "@/types/analytics";
 import { toast } from "react-toastify";
 
@@ -53,9 +52,22 @@ export default function DashboardHeader() {
 
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const blob = new Blob([wbout], { type: "application/octet-stream" });
-            saveAs(blob, "analytics_report.xlsx");
+            // Send file to Laravel backend
+            const formData = new FormData();
+            formData.append('file', new File([blob], `analytics_${Date.now()}.xlsx`));
 
-            toast.success("Analytics exported successfully!");
+            const res = await fetch('/api/reports', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                toast.success("Report saved and downloaded successfully!");
+            } else {
+                toast.error("Failed to save report on the server.");
+            }
         } catch (error) {
             console.error("Export failed", error);
             toast.error("Failed to export analytics. Please try again.");
