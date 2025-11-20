@@ -40,7 +40,7 @@ export default function Dashboard() {
     const [topDrivers, setTopDrivers] = useState<Driver[]>([]);
 
     useEffect(() => {
-        axios.get("/analytics/top-drivers")
+        axios.get("/api/analytics/top-drivers")
             .then(res => setTopDrivers(res.data))
             .catch(err => console.error("Failed to fetch top drivers:", err));
     }, [])
