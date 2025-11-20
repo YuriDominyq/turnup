@@ -15,6 +15,8 @@ import StatCard from '@/components/stat-card';
 import { CreateDriverDialog } from '@/components/create-driver';
 import { Driver, NewDriver } from '@/types/driver';
 import { Text } from '@/components/ui/text';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -47,7 +49,29 @@ export default function Drivers({ drivers }: DriversProps) {
     };
 
     const handleExport = () => {
-        console.log('Exporting drivers')
+        if (!driverList || driverList.length === 0) return;
+
+        const exportData = driverList.map(driver => ({
+            ID: driver.drivers_id,
+            'First Name': driver.first_name,
+            'Last Name': driver.last_name,
+            Email: driver.email,
+            Phone: driver.phone || "",
+            Status: driver.status,
+            Route: driver.route ? `${driver.route.first_terminal} ↔ ${driver.route.second_terminal}` : "",
+            'License Plate': driver.license_plate,
+            'Vehicle Type': driver.vehicle_type || "",
+            Rating: driver.rating,
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Drivers");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(dataBlob, `drivers_export_${new Date().toISOString()}.xlsx`);
     }
 
     const handleUpdateDriverStatus = (updatedDriver?: Driver & { deleted?: boolean }) => {
