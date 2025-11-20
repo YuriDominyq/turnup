@@ -24,4 +24,9 @@ class Route extends Model
     public function stops(){
         return $this->hasMany(Stop::class);
     }
+    
+    public function drivers()
+    {
+        return $this->hasMany(Driver::class, 'route_id', 'id');
+    }
 }

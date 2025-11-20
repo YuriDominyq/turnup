@@ -3,7 +3,6 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import KeyMetrics from '@/components/key-metrics';
 import DashboardHeader from '@/components/dashboard-header';
-import WeeklyPerformanceChart from '@/components/weekly-performance-chart';
 import DriverStatusDistribution from '@/components/driver-status-distribution';
 import TopDrivers from '@/components/top-drivers';
 import { Driver } from '@/types/driver';
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import DriversPerRouteChart from '@/components/driver-per-route-chart';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,15 +20,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 // Mock data for demonstration (fallback)
-const weeklyData = [
-    { day: 'Mon', activeDrivers: 45, checkIns: 89 },
-    { day: 'Tue', activeDrivers: 52, checkIns: 102 },
-    { day: 'Wed', activeDrivers: 48, checkIns: 95 },
-    { day: 'Thu', activeDrivers: 56, checkIns: 118 },
-    { day: 'Fri', activeDrivers: 61, checkIns: 134 },
-    { day: 'Sat', activeDrivers: 58, checkIns: 142 },
-    { day: 'Sun', activeDrivers: 47, checkIns: 98 },
-];
 
 const driverStatusData = [
     { name: 'On Duty', value: 47, color: '#10b981' },
@@ -39,13 +30,14 @@ const driverStatusData = [
 
 interface DashboardData {
     topDrivers: Driver[];
-    weeklyPerformance?: typeof weeklyData;
+    driversPerRoute: { route_name: string; driverCount: number }[];
     driverStatus?: typeof driverStatusData;
 }
 
 export default function Dashboard() {
     const [data, setData] = useState<DashboardData>({
         topDrivers: [],
+        driversPerRoute: [] as { route_name: string; driverCount: number }[],
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -57,17 +49,14 @@ export default function Dashboard() {
                 setError(null);
 
                 // Fetch all dashboard data in parallel
-                const [topDriversRes] = await Promise.all([
+                const [topDriversRes, driversPerRouteRes] = await Promise.all([
                     axios.get("/api/analytics/top-drivers"),
-                    // Add more endpoints as they become available:
-                    // axios.get("/api/analytics/weekly-performance"),
-                    // axios.get("/api/analytics/driver-status"),
+                    axios.get("/api/analytics/drivers-per-route"),
                 ]);
 
                 setData({
                     topDrivers: topDriversRes.data,
-                    // weeklyPerformance: weeklyRes.data,
-                    // driverStatus: statusRes.data,
+                    driversPerRoute: driversPerRouteRes.data,
                 });
             } catch (err) {
                 console.error("Failed to fetch dashboard data:", err);
@@ -102,7 +91,7 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     {/* Weekly Performance - spans 2 columns on xl screens */}
                     <div className="xl:col-span-2">
-                        <WeeklyPerformanceChart data={data.weeklyPerformance || weeklyData} />
+                        <DriversPerRouteChart data={data.driversPerRoute} />
                     </div>
 
                     {/* Driver Status Distribution */}
