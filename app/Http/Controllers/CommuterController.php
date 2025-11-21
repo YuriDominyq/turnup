@@ -100,8 +100,8 @@ class CommuterController extends Controller
         $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
-            'phone' => 'sometimes|nullable|string|max:15|unique:commuters,phone,' . $commuter->id,
-            'email' => 'sometimes|required|string|email|max:255|unique:commuters,email,' . $commuter->id,
+            'phone' => 'sometimes|nullable|string|max:15|unique:commuters,phone,' . $commuter->commuter_id . ',commuter_id',
+            'email' => 'sometimes|required|string|email|max:255|unique:commuters,email,' .  $commuter->commuter_id . ',commuter_id',
             'photo' => 'sometimes|nullable|string',
         ]);
 
