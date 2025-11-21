@@ -35,14 +35,26 @@ class FeedbackController extends Controller
 
     public function index()
     {
-        $feedbacks = Feedback::with(['ride', 'driver', 'commuter'])->latest()->get();
+         $feedbacks = Feedback::with([
+            'ride.route',
+            'ride.startStop',
+            'ride.endStop',
+            'driver',
+            'commuter'
+        ])->latest()->get();
 
         return response()->json($feedbacks);
     }
 
     public function show($id)
     {
-        $feedback = Feedback::with(['ride', 'driver', 'commuter'])->findOrFail($id);
+        $feedback = Feedback::with([
+            'ride.route',
+            'ride.startStop',
+            'ride.endStop',
+            'driver',
+            'commuter'
+        ])->findOrFail($id);
 
         return response()->json($feedback);
     }
