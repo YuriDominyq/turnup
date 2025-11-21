@@ -77,14 +77,13 @@ class RideController extends Controller
         }
         
         $nearestEndStop = null;
-        if ($ride->route_id) {
-            $nearestEndStop = Stop::where('route_id', $ride->route_id)
-                ->orderByRaw("power(lat - ?, 2) + power(lng - ?, 2) ASC", [
-                    $validated['end_lat'],
-                    $validated['end_lng']
-                ])
-                ->first();
-        }
+        $nearestEndStop = Stop::query()
+            ->when($ride->route_id, fn($q) => $q->where('route_id', $ride->route_id))
+            ->orderByRaw("power(lat - ?, 2) + power(lng - ?, 2) ASC", [
+                $validated['end_lat'],
+                $validated['end_lng']
+            ])
+            ->first();
 
 
         $ride->update([
