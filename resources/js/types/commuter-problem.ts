@@ -5,7 +5,7 @@ export interface Report {
     subject: string;
     description: string;
     route: string;
-    bus: string;
+    jeepneyDriver: string;
     startStop: string;
     endStop: string;
     incidentDate: string;
@@ -26,7 +26,7 @@ export interface FeedbackResponse {
         phone: string;
     };
     ride?: {
-        route?: { name: string };
+        route?: { first_terminal: string; second_terminal: string };
         startStop?: { name: string };
         endStop?: { name: string };
         driver?: {
