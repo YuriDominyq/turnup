@@ -34,6 +34,7 @@ export default function CommuterProblems() {
                         subject: `Rating: ${fb.rating}/5`,
                         description: fb.comment || '',
                         route: fb.ride?.route?.name || 'N/A',
+                        bus: fb.ride?.driver ? `${fb.ride.driver.first_name} ${fb.ride.driver.last_name}` : 'N/A',
                         startStop: fb.ride?.startStop?.name || 'N/A',
                         endStop: fb.ride?.endStop?.name || 'N/A',
                         incidentDate: new Date(fb.created_at).toLocaleString(),

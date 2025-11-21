@@ -39,7 +39,7 @@ class FeedbackController extends Controller
             'ride.route',
             'ride.startStop',
             'ride.endStop',
-            'driver',
+            'ride.driver',
             'commuter'
         ])->latest()->get();
 
@@ -52,7 +52,7 @@ class FeedbackController extends Controller
             'ride.route',
             'ride.startStop',
             'ride.endStop',
-            'driver',
+            'ride.driver',
             'commuter'
         ])->findOrFail($id);
 

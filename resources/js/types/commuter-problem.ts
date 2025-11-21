@@ -28,5 +28,10 @@ export interface FeedbackResponse {
         route?: { name: string };
         startStop?: { name: string };
         endStop?: { name: string };
+        driver?: {
+            first_name: string;
+            last_name: string;
+            license_plate?: string;
+        };
     };
 }
