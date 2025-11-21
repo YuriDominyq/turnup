@@ -27,11 +27,28 @@ export default function CommuterProblems() {
                     const severity = fb.rating >= 4 ? 'high' : fb.rating === 3 ? 'medium' : 'low';
                     const status = 'new';
 
+                    const getStarRating = (rating: number) => {
+                        const fullStars = '⭐'.repeat(rating);
+                        const emptyStars = '☆'.repeat(5 - rating);
+                        return fullStars + emptyStars;
+                    };
+
+                    const getRatingLabel = (rating: number) => {
+                        switch (rating) {
+                            case 1: return 'Poor';
+                            case 2: return 'Fair';
+                            case 3: return 'Good';
+                            case 4: return 'Very Good';
+                            case 5: return 'Excellent';
+                            default: return '';
+                        }
+                    };
+
                     return {
                         id: fb.feedback_id,
                         commuterName: `${fb.commuter?.first_name || ''} ${fb.commuter?.last_name || ''}`.trim() || 'Unknown',
                         commuterContact: fb.commuter?.phone || 'N/A',
-                        subject: `Rating: ${fb.rating}/5`,
+                        subject: `${getStarRating(fb.rating)} ${getRatingLabel(fb.rating)}`,
                         description: fb.comment || '',
                         route: fb.ride?.route ? `${fb.ride.route.first_terminal} - ${fb.ride.route.second_terminal}` : 'N/A',
                         jeepneyDriver: fb.ride?.driver ? `${fb.ride.driver.first_name} ${fb.ride.driver.last_name}` : 'N/A',

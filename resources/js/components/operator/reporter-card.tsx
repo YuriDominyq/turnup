@@ -55,7 +55,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                                 <MapPin className="h-4 w-4" />
                                 <span><strong>Route:</strong> {report.route}</span>
                             </div>
-                            <div><strong>Bus:</strong> {report.bus}</div>
+                            <div><strong>Bus:</strong> {report.jeepneyDriver}</div>
                             <div><strong>Incident:</strong> {report.incidentDate}</div>
                             <div><strong>Contact:</strong> {report.commuterContact}</div>
                             <div className="flex items-center gap-1">
