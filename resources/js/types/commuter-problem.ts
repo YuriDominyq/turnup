@@ -5,6 +5,7 @@ export interface Report {
     subject: string;
     description: string;
     route: string;
+    bus: string;
     startStop: string;
     endStop: string;
     incidentDate: string;
