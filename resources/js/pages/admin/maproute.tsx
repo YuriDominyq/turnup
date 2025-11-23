@@ -211,23 +211,42 @@ export default function MapRoute() {
     }
 
     const snapToRoad = async (path: { lat: number; lng: number }[]) => {
-        if (path.length === 0) return []
+        if (path.length === 0) return [];
+
         const validPath = path.filter(p => !isNaN(p.lat) && !isNaN(p.lng));
         if (validPath.length === 0) return [];
 
-        const locations = validPath.map(p => `${p.lat},${p.lng}`).join('|');
-        const url = `https://roads.googleapis.com/v1/snapToRoads?path=${locations}&interpolate=true&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`;
+        const chunkArray = (arr: { lat: number; lng: number }[], size: number) => {
+            const chunks: { lat: number; lng: number }[][] = [];
+            for (let i = 0; i < arr.length; i += size) {
+                chunks.push(arr.slice(i, i + size));
+            }
+            return chunks;
+        };
 
-        const res = await fetch(url);
-        const data: SnapToRoadResponse = await res.json();
+        const chunks = chunkArray(validPath, 100);
 
-        if (!data.snappedPoints) return [];
+        let snappedResults: { lat: number; lng: number }[] = [];
 
-        return data.snappedPoints.map(p => ({
-            lat: p.location.latitude,
-            lng: p.location.longitude,
-        }));
-    }
+        for (const chunk of chunks) {
+            const locations = chunk.map(p => `${p.lat},${p.lng}`).join('|');
+
+            const url = `https://roads.googleapis.com/v1/snapToRoads?path=${locations}&interpolate=true&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`;
+
+            const res = await fetch(url);
+            const data: SnapToRoadResponse = await res.json();
+
+            if (data.snappedPoints) {
+                const mapped = data.snappedPoints.map(p => ({
+                    lat: p.location.latitude,
+                    lng: p.location.longitude,
+                }));
+                snappedResults = [...snappedResults, ...mapped];
+            }
+        }
+
+        return snappedResults;
+    };
 
 
     const isFormValid = firstTerminal && secondTerminal && stops.length >= 2;
