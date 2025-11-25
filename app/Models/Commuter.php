@@ -23,7 +23,7 @@ class Commuter extends Model
         'phone',
         'email',
         'password',
-        'photo',
+        'photo_url',
         'otp_code',
         'is_verified',
     ];
@@ -40,10 +40,10 @@ class Commuter extends Model
 
     public function getPhotoUrlAttribute()
     {
-        if (!$this->photo) {
+        if (!$this->photo_url) {
             return null;
         }
 
-        return Storage::disk('r2')->url($this->photo);
+        return Storage::disk('r2')->url($this->photo_url);
     }
 }
