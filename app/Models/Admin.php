@@ -58,7 +58,10 @@ class Admin extends Authenticatable implements MustVerifyEmail
         if (empty($this->attributes['photo_url'])) {
             return null;
         }
-
-        return Storage::disk('r2')->url($this->attributes['photo_url']);
+        
+        return Storage::disk('r2')->temporaryUrl(
+            $this->attributes['photo_url'],
+            now()->addMinutes(10)
+        );
     }
 }
