@@ -56,15 +56,15 @@ class ProfileController extends Controller
             if ($file->isValid()) {
 
                 // Delete old photo from R2
-                if ($user->photo_path) {
-                    Storage::disk('r2')->delete($user->photo_path);
+                if ($user->photo_url) {
+                    Storage::disk('r2')->delete($user->photo_url);
                 }
 
                 // Upload new photo to R2
                 $path = $file->store('profile-photos', 'r2');
 
                 // Save only the R2 path
-                $user->photo_path = $path;
+                $user->photo_url = $path;
             }
         }
 
