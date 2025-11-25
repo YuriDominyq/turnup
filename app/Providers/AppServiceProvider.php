@@ -31,19 +31,7 @@ class AppServiceProvider extends ServiceProvider
             'auth' => function () {
                 $user = Auth::user();
                 if (!$user) return null;
-
-                return [
-                    'user' => [
-                        'id' => $user->id,
-                        'first_name' => $user->first_name,
-                        'last_name' => $user->last_name,
-                        'email' => $user->email,
-                        'role' => $user->role,
-                        'photo_url' => $user->photo_url,
-                        'full_photo_url' => $user->full_photo_url,
-                        'email_verified_at' => $user->email_verified_at,
-                    ]
-                ];
+                return $user ? ['user' => $user->toArray()] : null;
             }
         ]);
          
