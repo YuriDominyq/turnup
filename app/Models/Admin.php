@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Admin extends Authenticatable implements MustVerifyEmail
 {
@@ -48,5 +49,15 @@ class Admin extends Authenticatable implements MustVerifyEmail
     public function isOperator():bool
     {
         return $this->role === 'operator';
+    }
+
+    
+    public function getFullPhotoUrlAttribute()
+    {
+        if (empty($this->attributes['photo_url'])) {
+            return null;
+        }
+
+        return Storage::disk('r2')->url($this->attributes['photo_url']);
     }
 }
