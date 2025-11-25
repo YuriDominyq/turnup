@@ -59,9 +59,6 @@ class Admin extends Authenticatable implements MustVerifyEmail
             return null;
         }
         
-        return Storage::disk('r2')->temporaryUrl(
-            $this->attributes['photo_url'],
-            now()->addMinutes(10)
-        );
+        return Storage::disk('r2')->url($this->attributes['photo_url']);
     }
 }
