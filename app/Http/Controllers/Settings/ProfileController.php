@@ -42,7 +42,6 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        /** @var \Illuminate\Http\Request $request */
         $user = $request->user();
 
         $user->fill($request->validated());
@@ -55,18 +54,17 @@ class ProfileController extends Controller
             $file = $request->file('photo_url');
 
             if ($file->isValid()) {
-                // Delete old photo if exists
-                if ($user->photo_url) {
-                    $oldPath = parse_url($user->photo_url, PHP_URL_PATH);
-                    $oldPath = ltrim(str_replace('/storage/', '', $oldPath), '/');
-                    Storage::disk('public')->delete($oldPath);
+
+                // Delete old photo from R2
+                if ($user->photo_path) {
+                    Storage::disk('r2')->delete($user->photo_path);
                 }
 
-                // Store new photo
-                $path = $file->store('profile-photos', 'public');
+                // Upload new photo to R2
+                $path = $file->store('profile-photos', 'r2');
 
-                // Save full URL
-                $user->photo_url = env('APP_URL') . '/storage/' . $path;
+                // Save only the R2 path
+                $user->photo_path = $path;
             }
         }
 
