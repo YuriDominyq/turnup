@@ -25,9 +25,7 @@ Route::get('/version', function () {
 });
 
 Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
-    Route::get('admin/dashboard', function () {
-        return Inertia::render('admin/dashboard');
-    })->name('admin.dashboard');
+    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('admin/maproute', function () {
         return Inertia::render('admin/maproute');
