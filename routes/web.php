@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\OperatorController;
