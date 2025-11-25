@@ -27,19 +27,25 @@ class AppServiceProvider extends ServiceProvider
             ->prefix('api')
             ->group(base_path('routes/api.php'));
          
-         Inertia::share([
+        Inertia::share([
             'auth' => function () {
-                return[
-                    'user' => Auth::check()
-                        ? [
-                            'id' => Auth::id(),
-                            'name' => Auth::user()->name,
-                            'email' => Auth::user()->email,
-                            'role' => Auth::user()->role,
-                        ] : null,
+                $user = Auth::user();
+                if (!$user) return null;
+
+                return [
+                    'user' => [
+                        'id' => $user->id,
+                        'first_name' => $user->first_name,
+                        'last_name' => $user->last_name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                        'photo_url' => $user->photo_url,
+                        'full_photo_url' => $user->full_photo_url,
+                        'email_verified_at' => $user->email_verified_at,
+                    ]
                 ];
             }
-         ]);
+        ]);
          
          
         if(!cache()->has('php_start_time')){
