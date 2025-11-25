@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+
 
 class Commuter extends Model
 {
@@ -34,5 +36,14 @@ class Commuter extends Model
     public function rides()
     {
         return $this->hasMany(Ride::class, 'commuter_id', 'commuter_id');
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        if (!$this->photo) {
+            return null;
+        }
+
+        return Storage::disk('r2')->url($this->photo);
     }
 }
