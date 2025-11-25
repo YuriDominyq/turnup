@@ -52,9 +52,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                                     <div className="mt-4 flex items-center gap-6">
                                         <div className="relative">
-                                            {auth.user.photo_url ? (
+                                            {auth.user.full_photo_url ? (
                                                 <img
-                                                    src={auth.user.photo_url}
+                                                    src={auth.user.full_photo_url}
                                                     alt='Profile photo'
                                                     className='h-20 w-20 rounded-full object-cover ring-2 ring-border'
                                                 />

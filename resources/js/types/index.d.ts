@@ -38,6 +38,7 @@ export interface User {
     phone?: string | null;
     email: string;
     photo_url?: string | null;
+    full_photo_url?: string | null;
     email_verified_at: string | null;
     role: string;
 }

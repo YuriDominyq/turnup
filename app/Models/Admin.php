@@ -34,7 +34,8 @@ class Admin extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
+    protected $appends = ['full_photo_url'];
 
     public function getFullNameAttribute()
     {
