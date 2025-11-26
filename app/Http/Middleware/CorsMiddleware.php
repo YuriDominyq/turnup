@@ -17,6 +17,7 @@ class CorsMiddleware
     {
          $allowedOrigin = [
             'https://turnup-main-17rtje.laravel.cloud',
+            'https://turnup-admin.com/',
          ];
    
         if ($request->getMethod() === 'OPTIONS') {
