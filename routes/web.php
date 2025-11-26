@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\MapRouteController;
 use App\Http\Controllers\OperatorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,9 +30,8 @@ Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->grou
     Route::get('admin/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
 
-    Route::get('admin/maproute', function () {
-        return Inertia::render('admin/maproute');
-    })->name('admin.maproute');
+    Route::get('admin/maproute', [MapRouteController::class, 'index'])
+        ->name('admin.maproute');
 });
 
 Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
