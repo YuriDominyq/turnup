@@ -15,9 +15,15 @@ class OperatorController extends Controller
     public function index()
     {
         $operators = Admin::where('role', 'operator')->get();
+        $user = Auth::user();
 
         return Inertia::render('admin/operators', [
             'operators' => $operators,
+            'auth' => [
+                'user' => $user ? $user->append('full_photo_url')->only([
+                    'id', 'first_name', 'last_name', 'email', 'role', 'photo_url', 'full_photo_url'
+                ]) : null,
+            ],
         ]);
     }
     
