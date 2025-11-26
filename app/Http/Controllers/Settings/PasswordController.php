@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PasswordController extends Controller
 {
@@ -17,7 +18,15 @@ class PasswordController extends Controller
      */
     public function edit(): Response
     {
-        return Inertia::render('settings/password');
+        $user = Auth::user();
+
+        return Inertia::render('settings/password', [
+            'auth' => [
+                'user' => $user ? $user->append('full_photo_url')->only([
+                    'id', 'first_name', 'last_name', 'email', 'role', 'photo_url', 'full_photo_url'
+                ]) : null,
+            ],
+        ]);
     }
 
     /**
