@@ -8,7 +8,9 @@ class DriverPerRouteController extends Controller
 {
     public function driversPerRoute()
     {
-        $routes = Route::withCount('drivers')->get();
+         $routes = Route::where('disabled', false)
+                   ->withCount('drivers')
+                   ->get();
 
         $data = $routes->map(fn($route) => [
             'route_name' => "{$route->first_terminal} ↔ {$route->second_terminal}",
