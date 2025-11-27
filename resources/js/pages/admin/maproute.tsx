@@ -344,27 +344,14 @@ export default function MapRoute() {
             </Card>
 
             {selectedRoute && (
-                <div
-                    className="
-            fixed top-24 left-1/2 -translate-x-1/2 
-            px-4 py-2 rounded-xl flex items-center gap-3 z-50
-            shadow-lg backdrop-blur-md border
-
-            bg-white/70 border-gray-300/50 text-gray-800
-            dark:bg-neutral-900/70 dark:border-neutral-700/50 dark:text-white
-        "
-                >
-                    <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: selectedRoute.color }}
-                    ></div>
-
-                    <MapPin className="text-blue-600 dark:text-blue-400" size={18} />
-
-                    <span className="font-medium">
-                        {selectedRoute.firstTerminal} → {selectedRoute.secondTerminal}
-                    </span>
-                </div>
+                <Card className="w-full max-w-4xl mx-auto mt-4">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <MapPin className="text-blue-500" size={18} />
+                            Route: {selectedRoute.firstTerminal} → {selectedRoute.secondTerminal}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
             )}
 
             {/* Map */}
