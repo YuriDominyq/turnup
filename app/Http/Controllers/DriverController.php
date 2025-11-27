@@ -49,7 +49,7 @@ class DriverController extends Controller
         $validated = $request->validate([
            'first_name' => 'required|string|max:255',
            'last_name'  => 'required|string|max:255',
-           'email' => ['required', 'email', new UniqueActiveDriverEmail()],
+           'email' => ['required', 'email', UniqueActiveDriverEmail::class],
            'phone'      => 'nullable|string|max:20',
            'password'   => 'required|string|confirmed|min:6',
            'vehicle_type' => 'nullable|string|max:100',
