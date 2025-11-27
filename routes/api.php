@@ -68,9 +68,16 @@ Route::post('/nearby-stop', function(Request $request){
     
     if($nearbyStops->isEmpty()){
         return response()->json(['message' => 'No nearby stops found'], 404);
-    }     
-
-    $stop = $nearbyStops->first();
+    }
+    
+    $stop = $nearbyStops->first(function($s) {
+        return $s->route && (!$s->route->disabled || in_array($s->route->type, ['festival', 'detour']));
+    });
+    
+    if(!$stop) {
+        return response()->json(['message' => 'No nearby stops with active routes found'], 404);
+    }
+   
     $route = $stop->route;
 
     return response()->json([
