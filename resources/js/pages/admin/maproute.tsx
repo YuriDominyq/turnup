@@ -256,13 +256,25 @@ export default function MapRoute() {
 
     const handleToggleDisable = async (routeId: number) => {
         try {
+            // Call API to toggle this route
             await axios.patch(`https://turnup-admin.com/routes/${routeId}/toggle-disable`, {}, { withCredentials: true });
 
-            setRoutes(prev =>
-                prev.map(r =>
-                    r.id === routeId ? { ...r, disabled: !r.disabled } : r
-                )
-            );
+            setRoutes(prev => {
+                const toggledRoute = prev.find(r => r.id === routeId);
+                if (!toggledRoute) return prev;
+
+                const newDisabledStatus = !toggledRoute.disabled;
+
+                return prev.map(r => {
+                    if (r.firstTerminal === toggledRoute.firstTerminal && r.secondTerminal === toggledRoute.secondTerminal) {
+                        return {
+                            ...r,
+                            disabled: r.id === routeId ? newDisabledStatus : true
+                        };
+                    }
+                    return r;
+                });
+            });
 
             toast.success("Route status updated");
         } catch (err) {
@@ -270,6 +282,7 @@ export default function MapRoute() {
             toast.error("Failed to update route status");
         }
     };
+
 
 
     const isFormValid = firstTerminal && secondTerminal && stops.length >= 2;
