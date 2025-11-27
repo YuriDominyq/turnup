@@ -123,9 +123,10 @@ class RouteController extends Controller
         $user = Auth::user()?->full_name ?? 'System';
         $this->createSystemLog(
             'Route Status Changed',
-            "Route {$route->first_terminal} - {$route->second_terminal} disabled status set to {$route->disabled} by {$user}.",
+            "Route {$route->first_terminal} - {$route->second_terminal} ({$route->type}) disabled status set to {$route->disabled} by {$user}.",
             'update'
         );
+
 
         return response()->json([
             'id' => $route->id,
