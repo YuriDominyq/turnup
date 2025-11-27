@@ -31,7 +31,8 @@ class RouteController extends Controller
             'stops.*.lat' => 'required|numeric',
             'stops.*.lng' => 'required|numeric',
             'color' => 'nullable|string|size:7',
-            'type' => 'required|in:main,festival,detour,emergency'
+            'type' => 'required|in:main,festival,detour,emergency',
+            'disabled' => 'nullable|boolean',
         ]);
 
 
@@ -41,7 +42,8 @@ class RouteController extends Controller
             'created_by' => $request->user()->id,
             'polyline' => $request->polyline,
             'color' => $request->color ?? '#3388ff',
-            'type' => $request->type
+            'type' => $request->type,
+            'disabled' => $request->disabled ?? false,
         ]);
 
         foreach ($request->stops as $index => $stop){
@@ -92,5 +94,18 @@ class RouteController extends Controller
         }catch(\Exception $e){
             return response()->json(['message' => 'Failed to delete route'], 500);
         }
+    }
+
+    public function toggleDisable($id)
+    {
+        $route = Route::findOrFail($id);
+        $route->disabled = !$route->disabled;
+        $route->save();
+
+        return response()->json([
+            'id' => $route->id,
+            'disabled' => $route->disabled,
+            'message' => 'Route status updated successfully'
+        ]);
     }
 }

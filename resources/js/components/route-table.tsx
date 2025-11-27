@@ -14,6 +14,7 @@ export interface Route {
     polyline: { lat: number, lng: number }[];
     color: string,
     type: "main" | "festival" | "detour" | "emergency";
+    disabled?: boolean;
 }
 
 export interface Stop {
@@ -26,12 +27,13 @@ interface TableRoutesProps {
     routes: Route[];
     onView?: (route: Route) => void
     onDelete: (id: number) => void
+    onToggleDisable?: (id: number) => void;
 }
 
 
 type RouteType = "main" | "festival" | "detour" | "emergency";
 
-export default function TableRoute({ routes, onView, onDelete }: TableRoutesProps) {
+export default function TableRoute({ routes, onView, onDelete, onToggleDisable }: TableRoutesProps) {
     const [selectedType, setSelectedType] = useState<RouteType>("main");
 
     const filteredRoutes = routes.filter(route => route.type === selectedType);
@@ -109,6 +111,18 @@ export default function TableRoute({ routes, onView, onDelete }: TableRoutesProp
                                         View
                                     </Button>
                                 )}
+
+                                {onToggleDisable && (
+                                    <Button
+                                        size="sm"
+                                        variant={route.disabled ? "outline" : "secondary"}
+                                        onClick={() => onToggleDisable(route.id)}
+                                        className="whitespace-nowrap"
+                                    >
+                                        {route.disabled ? "Enable" : "Disable"}
+                                    </Button>
+                                )}
+
                                 <Button
                                     size="sm"
                                     variant="destructive"

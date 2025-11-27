@@ -148,6 +148,7 @@ export default function MapRoute() {
                 polyline: polylines[0]?.path ?? [],
                 stops: stops.map(s => ({ name: s.name, lat: s.position.lat, lng: s.position.lng })),
                 color: routeColor,
+                type: routeType,
             }
 
             const response = await axios.post<BackendRoute>("https://turnup-admin.com/routes", body, { withCredentials: true });
@@ -251,6 +252,23 @@ export default function MapRoute() {
         }
 
         return snappedResults;
+    };
+
+    const handleToggleDisable = async (routeId: number) => {
+        try {
+            await axios.patch(`https://turnup-admin.com/routes/${routeId}/toggle-disable`, {}, { withCredentials: true });
+
+            setRoutes(prev =>
+                prev.map(r =>
+                    r.id === routeId ? { ...r, disabled: !r.disabled } : r
+                )
+            );
+
+            toast.success("Route status updated");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to update route status");
+        }
     };
 
 
@@ -417,6 +435,7 @@ export default function MapRoute() {
                         }
                     }}
                     onDelete={handleDelete}
+                    onToggleDisable={handleToggleDisable}
                 />
             }
 

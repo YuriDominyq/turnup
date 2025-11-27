@@ -14,6 +14,9 @@ use App\Http\Middleware\NoCache;
 Route::middleware(['auth', 'verified', 'role:superadmin', CorsMiddleware::class])->group(function () {
     Route::post('routes', [RouteController::class, 'store']);
     Route::get('routes', [RouteController::class, 'index']);
+
+    Route::patch('routes/{route}/toggle-disable', [RouteController::class, 'toggleDisable'])
+        ->name('routes.toggleDisable');
 });
 
 Route::get('/', function () {
