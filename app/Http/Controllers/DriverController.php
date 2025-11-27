@@ -6,6 +6,7 @@ use App\Mail\DriverApprovedMail;
 use App\Models\Driver;
 use App\Models\Route;
 use App\Models\SystemLog;
+use App\Rules\UniqueActiveDriverEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -48,7 +49,7 @@ class DriverController extends Controller
         $validated = $request->validate([
            'first_name' => 'required|string|max:255',
            'last_name'  => 'required|string|max:255',
-           'email' => ['required', 'email', new \App\Rules\UniqueActiveDriverEmail()],
+           'email' => ['required', 'email', new UniqueActiveDriverEmail()],
            'phone'      => 'nullable|string|max:20',
            'password'   => 'required|string|confirmed|min:6',
            'vehicle_type' => 'nullable|string|max:100',
@@ -93,7 +94,7 @@ class DriverController extends Controller
         $validated = $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name'  => 'sometimes|required|string|max:255',
-            'email'      => 'sometimes|email|unique:drivers,email,' . $driver->drivers_id . ',drivers_id',
+            'email' => ['sometimes', 'required', 'email', new UniqueActiveDriverEmail($driver->drivers_id)],
             'phone'      => 'nullable|string|max:20',
             'password'   => 'sometimes|required|string|confirmed|min:6',
             'vehicle_type' => 'nullable|string|max:100',
