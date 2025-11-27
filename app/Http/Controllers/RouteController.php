@@ -68,7 +68,10 @@ class RouteController extends Controller
 
     public function index()
     {
-        return Route::with('stops')->get();
+        return Route::with('stops')
+            ->where('disabled', false)
+            ->whereIn('type', ['main', 'festival'])
+            ->get();
     }
 
     public function destroy($id)
