@@ -419,7 +419,7 @@ export default function MapRoute() {
             {/* Table */}
             {showTable &&
                 <TableRoute
-                    routes={routes.filter(r => r.type === routeType)}
+                    routes={routes}
                     onView={(route) => {
                         if (selectedRoute?.id === route.id) {
                             setSelectedRoute(null)
