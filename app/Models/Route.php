@@ -10,7 +10,7 @@ class Route extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_terminal', 'second_terminal', 'created_by', 'polyline', 'color'
+        'first_terminal', 'second_terminal', 'created_by', 'polyline', 'color', 'type'
     ];
 
     protected $casts = [

@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Badge } from "./ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { useState } from "react";
 
 export interface Route {
     id: number;
@@ -10,7 +12,8 @@ export interface Route {
     secondTerminal: string;
     stops: Stop[];
     polyline: { lat: number, lng: number }[];
-    color: string
+    color: string,
+    type: "main" | "festival" | "detour" | "emergency";
 }
 
 export interface Stop {
@@ -25,7 +28,13 @@ interface TableRoutesProps {
     onDelete: (id: number) => void
 }
 
+
+type RouteType = "main" | "festival" | "detour" | "emergency";
+
 export default function TableRoute({ routes, onView, onDelete }: TableRoutesProps) {
+    const [selectedType, setSelectedType] = useState<RouteType>("main");
+
+    const filteredRoutes = routes.filter(route => route.type === selectedType);
 
     if (routes.length === 0) {
         return (
@@ -38,10 +47,33 @@ export default function TableRoute({ routes, onView, onDelete }: TableRoutesProp
     }
 
     return (
-        <div className="space-y-6">
-            {routes.map((route, rIndex) => (
+        <div className="space-y-4">
+
+            {/* Dropdown to select route type */}
+            <div className="max-w-4xl mx-auto">
+                <Select value={selectedType} onValueChange={(val) => setSelectedType(val as RouteType)}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select Route Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="main">Main</SelectItem>
+                        <SelectItem value="festival">Festival</SelectItem>
+                        <SelectItem value="detour">Detour</SelectItem>
+                        <SelectItem value="emergency">Emergency</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+
+            {filteredRoutes.length === 0 && (
+                <div className="text-center py-8">
+                    <MapPin className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h3 className="mt-2 text-sm font-semibold text-foreground">No Routes</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">No {selectedType} routes available.</p>
+                </div>
+            )}
+            {filteredRoutes.map((route) => (
                 <Card
-                    key={rIndex}
+                    key={route.id}
                     className="shadow-md max-w-5xl mx-auto"
                     style={{ borderLeftColor: route.color }}
                 >

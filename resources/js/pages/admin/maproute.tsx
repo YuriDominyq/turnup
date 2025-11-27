@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, MapPin, RouteIcon, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import MapGuideModal from "@/components/map-guide-modal";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface BackendStop {
     name: string;
@@ -27,6 +28,7 @@ interface BackendRoute {
     polyline: string | { lat: string | number; lng: string | number } | { lat: string | number; lng: string | number }[];
     stops: BackendStop[];
     color?: string;
+    type?: "main" | "festival" | "detour" | "emergency";
 }
 
 interface SnappedPoint {
@@ -65,6 +67,7 @@ export default function MapRoute() {
     const [polylines, setPolylines] = useState<PolylineData[]>([])
     const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
     const [routeColor, setRouteColor] = useState("#3388ff");
+    const [routeType, setRouteType] = useState("main");
 
 
     useEffect(() => {
@@ -110,7 +113,8 @@ export default function MapRoute() {
                             lat: Number(stop.lat),
                             lng: Number(stop.lng)
                         })),
-                        color: route.color ?? "#3388ff"
+                        color: route.color ?? "#3388ff",
+                        type: route.type ?? "main",
                     }
                 }))
 
@@ -177,6 +181,7 @@ export default function MapRoute() {
                     lng: Number(s.lng),
                 })),
                 color: "#3388ff",
+                type: response.data.type ?? "main",
             };
 
             setRoutes(prev => [...prev, formattedRoute])
@@ -309,6 +314,21 @@ export default function MapRoute() {
                                 />
                             </div>
                         </div>
+
+                        <div className="space-y-2">
+                            <Label>Route Type</Label>
+                            <Select value={routeType} onValueChange={(value) => setRouteType(value)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select route type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="main">Main Route</SelectItem>
+                                    <SelectItem value="festival">Festival Route</SelectItem>
+                                    <SelectItem value="detour">Detour Route</SelectItem>
+                                    <SelectItem value="emergency">Emergency Route</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
 
                     {/* Status Message */}
@@ -381,7 +401,7 @@ export default function MapRoute() {
             {/* Table */}
             {showTable &&
                 <TableRoute
-                    routes={routes}
+                    routes={routes.filter(r => r.type === routeType)}
                     onView={(route) => {
                         if (selectedRoute?.id === route.id) {
                             setSelectedRoute(null)

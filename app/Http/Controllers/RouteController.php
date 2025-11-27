@@ -30,7 +30,8 @@ class RouteController extends Controller
             'stops.*.name' => 'required|string|max:255',
             'stops.*.lat' => 'required|numeric',
             'stops.*.lng' => 'required|numeric',
-            'color' => 'nullable|string|size:7'
+            'color' => 'nullable|string|size:7',
+            'type' => 'required|in:main,festival,detour,emergency'
         ]);
 
 
@@ -39,7 +40,8 @@ class RouteController extends Controller
             'second_terminal'=> $request->second_terminal,
             'created_by' => $request->user()->id,
             'polyline' => $request->polyline,
-            'color' => $request->color ?? '#3388ff'
+            'color' => $request->color ?? '#3388ff',
+            'type' => $request->type
         ]);
 
         foreach ($request->stops as $index => $stop){
