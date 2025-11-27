@@ -99,20 +99,21 @@ class RouteController extends Controller
     public function toggleDisable($id)
     {
         $route = Route::findOrFail($id);
-        $newStatus = !$route->disabled;
-        
-        if ($newStatus) {
+
+        if ($route->disabled) {
             Route::where('first_terminal', $route->first_terminal)
                 ->where('second_terminal', $route->second_terminal)
                 ->where('id', '!=', $route->id)
                 ->update(['disabled' => true]);
+
+            $route->disabled = false;
+        } else {
+            $route->disabled = true;
         }
 
-        $route->disabled = $newStatus;
         $route->save();
 
         $user = Auth::user()?->full_name ?? 'System';
-
         $this->createSystemLog(
             'Route Status Changed',
             "Route {$route->first_terminal} - {$route->second_terminal} disabled status set to {$route->disabled} by {$user}.",
@@ -125,4 +126,5 @@ class RouteController extends Controller
             'message' => 'Route status updated successfully'
         ]);
     }
+
 }
