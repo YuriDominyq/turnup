@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use App\Models\Driver;
 
-class UniqueActiveDriverEmail implements Rule
+class UniqueActiveDriverEmail
 {
     public function __invoke($attribute, $value, $fail)
     {
