@@ -68,10 +68,14 @@ class RouteController extends Controller
 
     public function index()
     {
-        return Route::with('stops')
-            ->where('disabled', false)
-            ->whereIn('type', ['main', 'festival'])
-            ->get();
+        $query = Route::with('stops')
+                  ->whereIn('type', ['main', 'festival']);
+
+        if (!Auth::user()->isSuperAdmin()) {
+            $query->where('disabled', false);
+        }
+
+        return $query->get();
     }
 
     public function destroy($id)
