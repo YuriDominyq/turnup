@@ -1,6 +1,6 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { BarChart3, BusFront, ChevronRight, Clock, MapPin, Shield, Users, Zap } from 'lucide-react';
+import { BarChart3, BusFront, ChevronRight, MapPin, Shield, Users, Zap } from 'lucide-react';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -17,14 +17,9 @@ export default function Welcome() {
             description: "Super Admins can create operator accounts. Operators can manage drivers and monitor their own performance."
         },
         {
-            icon: Clock,
-            title: "System Monitoring",
-            description: "Monitor platform health, track usage metrics, and ensure optimal performance"
-        },
-        {
             icon: BarChart3,
-            title: "Network Analytics",
-            description: "Displays summary data of routes, operators, and trips within the system",
+            title: "Descriptive Analytics",
+            description: "Displays summary data of routes, operators, and  drivers within the system",
         },
     ];
 
