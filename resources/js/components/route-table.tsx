@@ -42,9 +42,9 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
         return acc;
     }, {});
 
-    const [selectedVariants, setSelectedVariants] = useState<Record<string, RouteType>>(
+    const [selectedVariants, setSelectedVariants] = useState<Record<string, RouteType>>(() =>
         Object.fromEntries(
-            Object.entries(groupedRoutes).map(([terminals, variants]) => [terminals, variants[0].type])
+            Object.entries(groupedRoutes).map(([terminals, variants]) => [terminals, variants?.[0]?.type ?? "main"])
         )
     );
 
@@ -61,8 +61,10 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
     return (
         <div className="space-y-4">
             {Object.entries(groupedRoutes).map(([terminals, variants]) => {
-                const selectedType = selectedVariants[terminals];
-                const currentRoute = variants.find(v => v.type === selectedType)!;
+                if (variants.length === 0) return null;
+
+                const selectedType = selectedVariants[terminals] ?? variants[0].type;
+                const currentRoute = variants.find(v => v.type === selectedType) || variants[0];
 
                 return (
                     <Card key={terminals} className="shadow-md max-w-5xl mx-auto" style={{ borderLeftColor: currentRoute.color }}>
