@@ -135,4 +135,20 @@ class RouteController extends Controller
         ]);
     }
 
+    public function commuterRoutes()
+    {
+        try {
+            $query = Route::with('stops')
+                ->whereIn('type', ['main', 'festival'])
+                ->where('disabled', false);
+
+            $routes = $query->get();
+
+            return response()->json($routes, 200);
+
+        } catch (\Throwable $e) {
+            \Log::error('Commuter route fetch failed: ' . $e->getMessage());
+            return response()->json(['message' => 'Server error fetching routes.'], 500);
+        }
+    }
 }

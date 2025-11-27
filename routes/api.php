@@ -17,6 +17,7 @@ use App\Models\Stop;
 use App\Models\SystemLog;
 use Illuminate\Http\Request;
 
+// Commuter
 Route::post('auth/register', [CommuterController::class, 'register']);
 Route::post('auth/verify', [CommuterController::class, 'verifyOtp']);   
 Route::post('auth/login', [CommuterController::class, 'login']);
@@ -25,6 +26,7 @@ Route::get('stops/search', [StopController::class, 'search']);
 Route::get('commuter/driver-route/{driver}', [DriverAPIController::class, 'driverRouteForCommuter']);
 Route::put('/commuter/{commuter_id}/update', [CommuterController::class, 'updateProfile']);
 Route::put('/commuter/{commuter_id}/change-password', [CommuterController::class, 'changePassword']);
+Route::get('/commuter/routes', [RouteController::class, 'commuterRoutes']);
 
 
 Route::get('/system-logs', function () {
@@ -33,6 +35,7 @@ Route::get('/system-logs', function () {
     ]);
 });
 
+// Driver
 Route::post('driver/login', [DriverAPIController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
@@ -86,6 +89,7 @@ Route::post('/nearby-stop', function(Request $request){
     ]);
 });
 
+// Rides
 Route::prefix('rides')->group(function () {
     Route::get('/', [RideController::class, 'index']);
     Route::get('/{ride_id}', [RideController::class, 'show']);
@@ -93,6 +97,7 @@ Route::prefix('rides')->group(function () {
     Route::put('/end/{ride_id}', [RideController::class, 'endRide']);
 });
 
+// Feedback
 Route::prefix('feedback')->group(function (){
     Route::post('/', [FeedbackController::class, 'store']);
     Route::get('/', [FeedbackController::class, 'index']);
