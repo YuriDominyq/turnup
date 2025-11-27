@@ -343,6 +343,17 @@ export default function MapRoute() {
                 </CardContent>
             </Card>
 
+            {selectedRoute && (
+                <Card className="w-full max-w-4xl mx-auto mt-4">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <MapPin className="text-blue-500" size={18} />
+                            Route: {selectedRoute.firstTerminal} → {selectedRoute.secondTerminal}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+            )}
+
             {/* Map */}
             <div className="mt-6">
                 <Map
