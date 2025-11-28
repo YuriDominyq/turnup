@@ -77,9 +77,8 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                 if (variants.length === 0) return null;
 
                 // Pick variant based on global select OR default to first variant
-                const currentRoute =
-                    variants.find(v => v.type === globalVariant) ||
-                    variants[0];
+                const currentRoute = variants.find(v => v.type === globalVariant);
+                if (!currentRoute) return null;
 
                 return (
                     <Card
