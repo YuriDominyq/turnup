@@ -74,7 +74,7 @@ Route::post('/nearby-stop', function(Request $request){
     }
     
     $stop = $nearbyStops->first(function($s) {
-        return $s->route && (!$s->route->disabled || in_array($s->route->type, ['festival', 'detour']));
+        return $s->route != null;
     });
     
     if(!$stop) {
