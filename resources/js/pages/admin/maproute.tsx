@@ -471,7 +471,8 @@ export default function MapRoute() {
                                 <li>Enter start and end terminal names in the form</li>
                                 <li>Choose a color for your route visualization</li>
                                 <li>Click on the map to add stops along your route</li>
-                                <li>Drag stops to adjust their positions if needed</li>
+                                <li>Choose what type of route to determine to the commuters</li>
+                                <li>Use Polyline in the map to draw along with the stops</li>
                                 <li>Click "Save Route" when you have at least 2 stops</li>
                             </ol>
                         </div>
@@ -482,10 +483,10 @@ export default function MapRoute() {
                                 <h3 className="font-medium text-base">Managing Routes</h3>
                             </div>
                             <ul className="text-sm space-y-2 list-disc list-inside text-muted-foreground ml-6">
-                                <li>Use "Show Routes" to view all your saved routes</li>
                                 <li>Click "View" to display a specific route on the map</li>
                                 <li>Use "Delete" to remove routes you no longer need</li>
                                 <li>Routes are displayed with your chosen color on the map</li>
+                                <li>Routes are category based on your choose type</li>
                             </ul>
                         </div>
                     </div>
@@ -499,7 +500,7 @@ export default function MapRoute() {
                             <li>Add descriptive terminal names for easy identification</li>
                             <li>Use different colors for each route to distinguish them</li>
                             <li>Place stops in logical order along your intended path</li>
-                            <li>Test your route by viewing it before finalizing</li>
+                            <li>Click "Map Guide" to have ideas of your routes</li>
                         </ul>
                     </div>
                 </CardContent>
