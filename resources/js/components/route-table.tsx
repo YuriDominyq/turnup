@@ -34,7 +34,7 @@ type RouteType = "main" | "festival" | "detour" | "emergency";
 
 export default function TableRoute({ routes, onView, onDelete, onToggleDisable }: TableRoutesProps) {
 
-    // Group routes by terminal pair
+    // Group routes by terminals
     const groupedRoutes = routes.reduce<Record<string, Route[]>>((acc, route) => {
         const key = `${route.firstTerminal}→${route.secondTerminal}`;
         if (!acc[key]) acc[key] = [];
@@ -42,8 +42,11 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
         return acc;
     }, {});
 
-    // Global selected variant
-    const [globalVariant, setGlobalVariant] = useState<RouteType>("main");
+    const [selectedVariants, setSelectedVariants] = useState<Record<string, RouteType>>(() =>
+        Object.fromEntries(
+            Object.entries(groupedRoutes).map(([terminals, variants]) => [terminals, variants?.[0]?.type ?? "main"])
+        )
+    );
 
     if (routes.length === 0) {
         return (
@@ -57,35 +60,14 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
 
     return (
         <div className="space-y-4">
-
-            {/* GLOBAL SELECT */}
-            <div className="flex justify-end max-w-5xl mx-auto mb-4">
-                <Select value={globalVariant} onValueChange={(value) => setGlobalVariant(value as RouteType)}>
-                    <SelectTrigger className="w-40">
-                        <SelectValue placeholder="Route Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="main">Main Route</SelectItem>
-                        <SelectItem value="festival">Festival Route</SelectItem>
-                        <SelectItem value="detour">Detour Route</SelectItem>
-                        <SelectItem value="emergency">Emergency Route</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-
             {Object.entries(groupedRoutes).map(([terminals, variants]) => {
                 if (variants.length === 0) return null;
 
-                // Pick variant based on global select OR default to first variant
-                const currentRoute = variants.find(v => v.type === globalVariant);
-                if (!currentRoute) return null;
+                const selectedType = selectedVariants[terminals] ?? variants[0].type;
+                const currentRoute = variants.find(v => v.type === selectedType) || variants[0];
 
                 return (
-                    <Card
-                        key={terminals}
-                        className="shadow-md max-w-5xl mx-auto"
-                        style={{ borderLeft: `6px solid ${currentRoute.color}` }}
-                    >
+                    <Card key={terminals} className="shadow-md max-w-5xl mx-auto" style={{ borderLeftColor: currentRoute.color }}>
                         <CardHeader className="pb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                             <div className="flex-1 min-w-0">
                                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -93,33 +75,44 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                                     <span className="text-muted-foreground">→</span>
                                     <span className="truncate">{currentRoute.secondTerminal}</span>
                                 </CardTitle>
-
                                 <div className="flex items-center gap-2 mt-2">
                                     <Badge variant="secondary" className="text-xs">{currentRoute.stops.length} stops</Badge>
                                     <div
                                         className="w-4 h-4 rounded-full border border-border"
                                         style={{ backgroundColor: currentRoute.color }}
+                                        aria-label={`Route color: ${currentRoute.color}`}
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex flex-shrink-0 gap-2">
+                                {/* Variant selector */}
+                                <Select
+                                    value={selectedType}
+                                    onValueChange={(val) =>
+                                        setSelectedVariants(prev => ({ ...prev, [terminals]: val as RouteType }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Variant" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {variants.map(v => (
+                                            <SelectItem key={v.id} value={v.type}>{v.type}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+
                                 {onView && (
                                     <Button size="sm" variant="outline" onClick={() => onView(currentRoute)}>
                                         <Eye className="w-4 h-4 mr-1" /> View
                                     </Button>
                                 )}
-
                                 {onToggleDisable && (
-                                    <Button
-                                        size="sm"
-                                        variant={currentRoute.disabled ? "outline" : "secondary"}
-                                        onClick={() => onToggleDisable(currentRoute.id)}
-                                    >
+                                    <Button size="sm" variant={currentRoute.disabled ? "outline" : "secondary"} onClick={() => onToggleDisable(currentRoute.id)}>
                                         {currentRoute.disabled ? "Enable" : "Disable"}
                                     </Button>
                                 )}
-
                                 <Button size="sm" variant="destructive" onClick={() => onDelete(currentRoute.id)}>
                                     <Trash2 className="w-4 h-4 mr-1" /> Delete
                                 </Button>
@@ -136,17 +129,12 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                                             <TableHead>Coordinates</TableHead>
                                         </TableRow>
                                     </TableHeader>
-
                                     <TableBody>
                                         {currentRoute.stops.map((stop, idx) => (
                                             <TableRow key={idx} className="hover:bg-muted/20">
                                                 <TableCell className="font-medium text-muted-foreground">{idx + 1}</TableCell>
                                                 <TableCell className="font-medium">{stop.name || "Unnamed Stop"}</TableCell>
-                                                <TableCell className="font-mono text-sm">
-                                                    {stop.lat && stop.lng
-                                                        ? `${stop.lat.toFixed(5)}, ${stop.lng.toFixed(5)}`
-                                                        : "No coordinates"}
-                                                </TableCell>
+                                                <TableCell className="font-mono text-sm">{stop.lat != null && stop.lng != null ? `${Number(stop.lat).toFixed(5)}, ${Number(stop.lng).toFixed(5)}` : "No coordinates"}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
