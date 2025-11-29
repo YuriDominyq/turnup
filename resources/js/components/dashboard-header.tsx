@@ -1,5 +1,4 @@
-import { Download, RefreshCw, Truck } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { Download, Truck } from "lucide-react";
 import { Button } from "./ui/button";
 import { Text } from "./ui/text";
 import * as XLSX from "xlsx";
@@ -90,17 +89,9 @@ export default function DashboardHeader() {
                 </div>
             </div>
             <div className="flex items-center gap-2">
-                <Badge className='bg-primary text-primary-foreground'>
-                    <div className='w-2 h-2 bg-primary-foreground rounded-full mr-2 animate-pulse' />
-                    Live Data
-                </Badge>
                 <Button variant="outline" size="sm" onClick={exportAnalyticsToExcel}>
                     <Download className="h-4 w-4 mr-2" />
                     Export
-                </Button>
-                <Button variant="outline" size="sm">
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh
                 </Button>
             </div>
         </div>

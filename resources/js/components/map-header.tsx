@@ -1,5 +1,4 @@
 import { MapPin, Maximize, RefreshCw, Settings } from "lucide-react";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Label } from "./ui/label";
@@ -33,10 +32,6 @@ export default function MapHeader({
 
                     <div>
                         <Text size='xl' weight='bold'>Driver Tracker</Text>
-                        <Badge variant='secondary' className='bg-primary text-primary-foreground'>
-                            <div className='w-2 h-2 bg-primary-foreground rounded-full animate-pulse' />
-                            Live Data
-                        </Badge>
                     </div>
                 </div>
 
