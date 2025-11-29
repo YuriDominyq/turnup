@@ -106,6 +106,9 @@ class RouteController extends Controller
     public function toggleDisable($id)
     {
         $route = Route::findOrFail($id);
+        $user = Auth::user()?->full_name ?? 'System';
+  
+        $previousStatus = $route->disabled;
 
         if ($route->disabled) {
             Route::where('first_terminal', $route->first_terminal)
@@ -119,18 +122,16 @@ class RouteController extends Controller
         }
 
         $route->save();
-
-        $user = Auth::user()?->full_name ?? 'System';
-
-
-        $previousStatus = $route->getOriginal('disabled');
-        $action = $route->disabled ? 'Disabled' : 'Enabled';
-        $this->createSystemLog(
-            'Route Status Changed',
-            "Route {$route->first_terminal} → {$route->second_terminal} ({$route->type}) status changed from "
-            . ($previousStatus ? 'Disabled' : 'Enabled') . " to {$action} by {$user}.",
-            'update'
-        );
+ 
+        if ($previousStatus !== $route->disabled) {
+            $action = $route->disabled ? 'Disabled' : 'Enabled';
+            $this->createSystemLog(
+                'Route Status Changed',
+                "Route {$route->first_terminal} → {$route->second_terminal} ({$route->type}) status changed from "
+                . ($previousStatus ? 'Disabled' : 'Enabled') . " to {$action} by {$user}.",
+                'update'
+            );
+        }
 
         return response()->json([
             'id' => $route->id,
@@ -138,6 +139,7 @@ class RouteController extends Controller
             'message' => 'Route status updated successfully'
         ]);
     }
+
 
     public function commuterRoutes()
     {
