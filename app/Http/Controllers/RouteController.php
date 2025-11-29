@@ -121,12 +121,16 @@ class RouteController extends Controller
         $route->save();
 
         $user = Auth::user()?->full_name ?? 'System';
+
+
+        $previousStatus = $route->getOriginal('disabled');
+        $action = $route->disabled ? 'Disabled' : 'Enabled';
         $this->createSystemLog(
             'Route Status Changed',
-            "Route {$route->first_terminal} - {$route->second_terminal} ({$route->type}) disabled status set to {$route->disabled} by {$user}.",
+            "Route {$route->first_terminal} → {$route->second_terminal} ({$route->type}) status changed from "
+            . ($previousStatus ? 'Disabled' : 'Enabled') . " to {$action} by {$user}.",
             'update'
         );
-
 
         return response()->json([
             'id' => $route->id,
