@@ -137,7 +137,7 @@ export default function Drivers({ drivers }: DriversProps) {
                         title='Total Jeepney Drivers'
                         icon={<UserCheck className='h-4 w-4 text-muted-foreground' />}
                         count={drivers.length}
-                        description='+2 this week'
+                        description='This includes all registered drivers'
                     />
                     <StatCard
                         title='Active on Routes'
