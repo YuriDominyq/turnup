@@ -133,7 +133,7 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
 
                                         {/* TABLE */}
                                         <div className="rounded-md border max-h-64 overflow-y-auto">
-                                            <Table>
+                                            <Table className="min-w-full">
                                                 <TableHeader className="sticky top-0 z-10 bg-background">
                                                     <TableRow className="bg-muted/30">
                                                         <TableHead>#</TableHead>
