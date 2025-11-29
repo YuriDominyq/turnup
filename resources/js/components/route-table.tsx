@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Eye, MapPin, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -32,6 +33,8 @@ interface TableRoutesProps {
 type RouteType = "main" | "festival" | "detour" | "emergency";
 
 export default function TableRoute({ routes, onView, onDelete, onToggleDisable }: TableRoutesProps) {
+    const [selectedVariants, setSelectedVariants] = useState<Record<string, RouteType>>({});
+
     if (routes.length === 0) {
         return (
             <div className="text-center py-8">
@@ -44,7 +47,6 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
         );
     }
 
-    // Group by terminal pair: T1 → T2
     const groupedRoutes = routes.reduce<Record<string, Route[]>>((acc, route) => {
         const key = `${route.firstTerminal}→${route.secondTerminal}`;
         if (!acc[key]) acc[key] = [];
@@ -59,23 +61,28 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
             {Object.entries(groupedRoutes).map(([terminals, variants]) => {
                 if (variants.length === 0) return null;
 
-                // Default selected tab = first available variant for this terminal group
                 const defaultVariant = variants[0].type;
+                const activeType = selectedVariants[terminals] || defaultVariant;
+                const activeRoute = variants.find(v => v.type === activeType) || variants[0];
 
                 return (
                     <Card
                         key={terminals}
                         className="shadow-md max-w-5xl mx-auto"
-                        style={{ borderLeft: `6px solid ${variants[0].color}` }}
+                        style={{ borderLeft: `6px solid ${activeRoute.color}` }}
                     >
                         <CardHeader>
                             <CardTitle className="text-lg">{terminals}</CardTitle>
                         </CardHeader>
 
                         <CardContent>
-                            <Tabs defaultValue={defaultVariant} className="w-full">
-
-                                {/* ROUTE TYPE TABS */}
+                            <Tabs
+                                value={activeType}
+                                onValueChange={(value) =>
+                                    setSelectedVariants(prev => ({ ...prev, [terminals]: value as RouteType }))
+                                }
+                                className="w-full"
+                            >
                                 <TabsList className="grid grid-cols-4 w-full mb-4">
                                     {allTypes.map(type =>
                                         variants.some(v => v.type === type) && (
@@ -86,11 +93,8 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                                     )}
                                 </TabsList>
 
-                                {/* CONTENT FOR EACH VARIANT */}
                                 {variants.map(route => (
                                     <TabsContent key={route.id} value={route.type}>
-
-                                        {/* HEADER: stops + buttons */}
                                         <div className="flex justify-between mb-4">
                                             <div className="flex items-center gap-2">
                                                 <Badge variant="secondary">{route.stops.length} stops</Badge>
@@ -131,7 +135,6 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                                             </div>
                                         </div>
 
-                                        {/* TABLE */}
                                         <div className="rounded-md border max-h-64 overflow-y-auto">
                                             <Table className="min-w-full">
                                                 <TableHeader className="sticky top-0 z-10 bg-background">
@@ -145,9 +148,7 @@ export default function TableRoute({ routes, onView, onDelete, onToggleDisable }
                                                 <TableBody>
                                                     {route.stops.map((stop, idx) => (
                                                         <TableRow key={idx} className="hover:bg-muted/20">
-                                                            <TableCell className="text-muted-foreground">
-                                                                {idx + 1}
-                                                            </TableCell>
+                                                            <TableCell className="text-muted-foreground">{idx + 1}</TableCell>
                                                             <TableCell>{stop.name || "Unnamed Stop"}</TableCell>
                                                             <TableCell className="font-mono text-sm">
                                                                 {stop.lat && stop.lng
