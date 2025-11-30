@@ -70,7 +70,7 @@ class RouteController extends Controller
     public function index()
     {
         $query = Route::with('stops')
-                  ->whereIn('type', ['main', 'festival']);
+                  ->whereIn('type', ['main', 'festival', 'detour', 'emergency']);
 
         if (!Auth::user()->isSuperAdmin()) {
             $query->where('disabled', false);
@@ -146,7 +146,7 @@ class RouteController extends Controller
     {
         try {
             $query = Route::with('stops')
-                ->whereIn('type', ['main', 'festival'])
+                ->whereIn('type', ['main', 'festival', 'detour', 'emergency'])
                 ->where('disabled', false);
 
             $routes = $query->get();

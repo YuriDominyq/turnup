@@ -23,7 +23,7 @@ class DriverController extends Controller
             ->get();
 
          $routes = Route::where('disabled', false)
-                  ->whereIn('type', ['main', 'festival'])
+                  ->whereIn('type', ['main', 'festival', 'detour', 'emergency'])
                   ->get();
         
         return Inertia::render('operator/driver', [
