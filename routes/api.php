@@ -27,6 +27,7 @@ Route::get('commuter/driver-route/{driver}', [DriverAPIController::class, 'drive
 Route::put('/commuter/{commuter_id}/update', [CommuterController::class, 'updateProfile']);
 Route::put('/commuter/{commuter_id}/change-password', [CommuterController::class, 'changePassword']);
 Route::get('/commuter/routes', [RouteController::class, 'commuterRoutes']);
+Route::post('/fastest-route', [RouteController::class, 'getFastestRoute']);
 
 
 Route::get('/system-logs', function () {

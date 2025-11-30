@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Route;
 use App\Models\SystemLog;
+use App\Services\RouteService;
 use Illuminate\Support\Facades\Auth;
 
 class RouteController extends Controller
@@ -156,5 +157,33 @@ class RouteController extends Controller
             \Log::error('Commuter route fetch failed: ' . $e->getMessage());
             return response()->json(['message' => 'Server error fetching routes.'], 500);
         }
+    }
+
+    public function getFastestRoute(Request $request)
+    {
+        $originStopId = $request->input('origin_stop_id');
+        $destinationStopId = $request->input('destination_stop_id');
+
+        $directRoute = RouteService::findFastestRoute($originStopId, $destinationStopId);
+
+        if($directRoute){
+            return response()->json([
+                'type' => 'direct',
+                'route' => $directRoute,
+            ]);
+        }
+
+        $transferRoute = RouteService::findRouteWithTransfer($originStopId, $destinationStopId);
+
+        if($transferRoute){
+            return response()->json([
+                'type' => 'transfer',
+                'route' => $transferRoute,
+            ]);
+        }
+
+        return response()->json9([
+            'message' => 'No available route found between the specified stops.', 404
+        ]);
     }
 }
