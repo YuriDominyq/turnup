@@ -28,6 +28,7 @@ Route::put('/commuter/{commuter_id}/update', [CommuterController::class, 'update
 Route::put('/commuter/{commuter_id}/change-password', [CommuterController::class, 'changePassword']);
 Route::get('/commuter/routes', [RouteController::class, 'commuterRoutes']);
 Route::post('/fastest-route', [RouteController::class, 'getFastestRoute']);
+Route::post('/commuter/resend-otp', [CommuterController::class, 'resendOtp']);
 
 
 Route::get('/system-logs', function () {

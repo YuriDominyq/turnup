@@ -143,4 +143,29 @@ class CommuterController extends Controller
 
         return response()->json(['message' => 'Password changed successfully.']);
     }
+
+    public function resendOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $commuter = Commuter::where('email', $request->email)->first();
+
+        if(!$commuter) {
+            return response()->json(['message' => 'Commuter not found.'], 404);
+        }
+
+        if($commuter->is_verified == 1) {
+            return response()->json(['message' => 'Account is already verified.'], 400);
+        }
+
+        $otp = rand(100000, 999999);
+        $commuter->otp_code = $otp;
+        $commuter->save();
+
+        Mail::to($commuter->email)->send(new CommuterVerificationMail($commuter, $otp));
+
+        return response()->json(['message' => 'OTP code resent successfully. Please check your email.'], 200);
+    }
 }
