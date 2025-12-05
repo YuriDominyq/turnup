@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MapRouteController;
 use App\Http\Controllers\OperatorController;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,11 @@ Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(
     })->name('operator.problems');
 
     Route::get('operator/checkin', [DriverCheckInController::class, 'indexWeb'])->name('operator.checkin');
+
+    Route::get('operator/faqs', [FaqController::class, 'index'])->name('operator.faq.index');
+    Route::post('operator/faqs', [FaqController::class, 'store'])->name('operator.faq.store');
+    Route::put('operator/faqs/{faq}', [FaqController::class, 'update'])->name('operator.faq.update');
+    Route::delete('operator/faqs/{faq}', [FaqController::class, 'destroy'])->name('operator.faq.destroy');
 });
 
 

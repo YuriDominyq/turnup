@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, BarChart3, Map, MapIcon, MessageSquare, Users } from 'lucide-react';
+import { Activity, BarChart3, HelpCircle, Map, MapIcon, MessageSquare, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 import { AppVersion } from './app-version';
 
@@ -54,6 +54,11 @@ export function AppSidebar() {
             title: 'Check-ins',
             href: '/operator/checkin',
             icon: Activity,
+        },
+        {
+            title: 'Chatbot FAQs',
+            href: '/operator/information',
+            icon: HelpCircle,
         },
     ] : [];
 

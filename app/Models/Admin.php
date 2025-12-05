@@ -52,6 +52,10 @@ class Admin extends Authenticatable implements MustVerifyEmail
         return $this->role === 'operator';
     }
 
+    public function faqs()
+    {
+        return $this->hasMany(FAQ::class, 'admin_id', 'id');
+    }
     
     public function getFullPhotoUrlAttribute()
     {
