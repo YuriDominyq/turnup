@@ -70,10 +70,10 @@ Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(
 
     Route::get('operator/checkin', [DriverCheckInController::class, 'indexWeb'])->name('operator.checkin');
 
-    Route::get('operator/faqs', [FaqController::class, 'index'])->name('operator.faq.index');
-    Route::post('operator/faqs', [FaqController::class, 'store'])->name('operator.faq.store');
-    Route::put('operator/faqs/{faq}', [FaqController::class, 'update'])->name('operator.faq.update');
-    Route::delete('operator/faqs/{faq}', [FaqController::class, 'destroy'])->name('operator.faq.destroy');
+    Route::get('operator/information', [FaqController::class, 'index'])->name('operator.faq.index');
+    Route::post('operator/information', [FaqController::class, 'store'])->name('operator.faq.store');
+    Route::put('operator/information/{faq}', [FaqController::class, 'update'])->name('operator.faq.update');
+    Route::delete('operator/information/{faq}', [FaqController::class, 'destroy'])->name('operator.faq.destroy');
 });
 
 
