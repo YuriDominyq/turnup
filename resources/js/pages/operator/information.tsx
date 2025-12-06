@@ -18,6 +18,7 @@ interface FAQ {
     question: string;
     answer: string;
     category: string;
+    keywords?: string;
 }
 
 interface InformationProps {
@@ -33,13 +34,15 @@ export default function Information({ faqs }: InformationProps) {
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
     const [highlightedId, setHighlightedId] = useState<number | null>(null);
+    const [newKeywords, setNewKeywords] = useState<string>("");
 
     const filteredFaqs = localFaqs
         .filter(
             (f) =>
                 f.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 f.answer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                f.category.toLowerCase().includes(searchQuery.toLowerCase())
+                f.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                f.keywords?.toLowerCase().includes(searchQuery.toLowerCase())
         )
         .sort((a, b) => b.id - a.id);
 
@@ -47,6 +50,7 @@ export default function Information({ faqs }: InformationProps) {
         setNewQuestion("");
         setNewAnswer("");
         setNewCategory("");
+        setNewKeywords("");
         setEditingId(null);
     };
 
@@ -104,6 +108,7 @@ export default function Information({ faqs }: InformationProps) {
         setNewQuestion(faq.question);
         setNewAnswer(faq.answer);
         setNewCategory(faq.category);
+        setNewKeywords("");
     };
 
     const handleDelete = (faq: FAQ) => {
@@ -152,6 +157,11 @@ export default function Information({ faqs }: InformationProps) {
                             placeholder="Category"
                             value={newCategory}
                             onChange={(e) => setNewCategory(e.target.value)}
+                        />
+                        <Input
+                            placeholder="Keywords (comma-separated)"
+                            value={newKeywords}
+                            onChange={(e) => setNewKeywords(e.target.value)}
                         />
                         <Button onClick={handleSave} disabled={loading}>
                             {loading

@@ -26,6 +26,7 @@ class FaqController extends Controller
             'question' => 'required|string|max:255',
             'answer'   => 'required|string',
             'category' => 'required|string|max:100',
+            'keywords' => 'required|string'
         ]);
 
         $validated['admin_id'] = Auth::id(); 
@@ -43,6 +44,7 @@ class FaqController extends Controller
             'question' => 'required|string|max:255',
             'answer'   => 'required|string',
             'category' => 'required|string|max:100',
+            'keywords' => 'required|string'
         ]);
 
         $faq->update($validated);

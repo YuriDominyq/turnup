@@ -16,6 +16,7 @@ class Faq extends Model
         'answer',
         'category',
         'admin_id',
+        'keywords'
     ];
     
     public function admin()
