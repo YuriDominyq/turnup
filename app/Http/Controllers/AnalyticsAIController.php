@@ -8,8 +8,11 @@ class AnalyticsAIController extends Controller
 {
     public function summarizeDrivers()
     {
-        // Fetch data from your own API
         $routesData = Http::get(url('/analytics/drivers-per-route'))->json();
+
+        if (!$routesData) {
+            return response()->json(['summary' => 'No route data available.']);
+        }
 
        $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
@@ -36,7 +39,7 @@ class AnalyticsAIController extends Controller
             "max_tokens" => 400
         ]);
 
-        $summary = $response->json()['choices'][0]['message']['content'] ?? 'No summary generated.';
+        $summary = $response->json()['choices'][0]['message']['content'] ?? 'AI summary not available at the moment.';
 
         return response()->json(['summary' => $summary]);
     }
