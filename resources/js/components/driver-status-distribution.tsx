@@ -1,6 +1,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useEffect, useState } from "react";
+import { Zap } from "lucide-react";
 
 interface Status {
     name: string;
@@ -93,7 +94,10 @@ export default function DriverStatusDistribution({ data }: DriverStatusDistribut
                 )}
 
                 <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">🤖 AI Insights</h3>
+                    <h3 className="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                        <Zap className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                        AI Insights
+                    </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
                         {aiSummary}
                     </p>

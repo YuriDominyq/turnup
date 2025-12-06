@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { TrendingUp, Users, Route } from "lucide-react";
+import { TrendingUp, Users, Route, Zap } from "lucide-react";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 interface DriversPerRouteChartProps {
@@ -199,9 +199,10 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                             </div>
 
                             {/* AI Insights */}
-                            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mt-4">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                    🤖 AI Insights
+                            <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mt-4">
+                                <h3 className="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                    <Zap className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                                    AI Insights
                                 </h3>
                                 <p className={`text-sm whitespace-pre-line ${aiSummary.startsWith("Failed") ? "text-red-500" : "text-gray-600 dark:text-gray-400"}`}>
                                     {aiSummary}

@@ -2,8 +2,20 @@ import { Driver } from "@/types/driver";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Trophy, Star } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
+    const [aiSummary, setAiSummary] = useState<string>("Loading AI insights...");
+
+    useEffect(() => {
+        fetch("/api/analytics/top-drivers")
+            .then(res => res.json())
+            .then(data => setAiSummary(data.summary || "No AI insights available."))
+            .catch(err => {
+                console.error(err);
+                setAiSummary("Failed to load AI insights.");
+            });
+    }, []);
     const getRankColor = (index: number) => {
         switch (index) {
             case 0: return "bg-yellow-500 dark:bg-yellow-600 text-white shadow-md";
@@ -88,6 +100,17 @@ export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
                         </div>
                     );
                 })}
+
+                {aiSummary && (
+                    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                            AI Insights
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                            {aiSummary}
+                        </p>
+                    </div>
+                )}
             </CardContent>
         </Card>
     );
