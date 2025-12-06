@@ -131,11 +131,11 @@ export default function Information({ faqs }: InformationProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="FAQs" />
 
-            <div className="space-y-6 p-6 max-w-7xl mx-auto">
+            <div className="space-y-6 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg">
+                        <div className="p-2.5 bg-primary rounded-xl">
                             <HelpCircle className="h-7 w-7 text-white" />
                         </div>
                         <div>
