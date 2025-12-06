@@ -10,7 +10,7 @@ export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
     useEffect(() => {
         fetch("/api/analytics/top-drivers")
             .then(res => res.json())
-            .then(data => setAiSummary(data.summary || "No AI insights available."))
+            .then(data => setAiSummary(data.ai_summary || "No AI insights available."))
             .catch(err => {
                 console.error(err);
                 setAiSummary("Failed to load AI insights.");
