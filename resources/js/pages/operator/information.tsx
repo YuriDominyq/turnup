@@ -74,7 +74,7 @@ export default function Information({ faqs }: InformationProps) {
         };
 
         if (editingId !== null) {
-            Inertia.put(route("operator.faqs.update", editingId), data, {
+            Inertia.put(route("operator.faq.update", editingId), data, {
                 onSuccess: () => {
                     setLocalFaqs((prev) =>
                         prev.map((f) => (f.id === editingId ? { ...f, ...data } : f))
@@ -89,7 +89,7 @@ export default function Information({ faqs }: InformationProps) {
                 onError: () => setLoading(false),
             });
         } else {
-            Inertia.post(route("operator.faqs.store"), data, {
+            Inertia.post(route("operator.faq.store"), data, {
                 onSuccess: (page) => {
                     const { faq } = (page.props as unknown) as { faq?: FAQ };
                     if (faq) {
@@ -120,7 +120,7 @@ export default function Information({ faqs }: InformationProps) {
 
     const handleDelete = (faq: FAQ) => {
         if (!confirm("Are you sure you want to delete this FAQ?")) return;
-        Inertia.delete(route("operator.faqs.destroy", faq.id), {
+        Inertia.delete(route("operator.faq.destroy", faq.id), {
             onSuccess: () => {
                 setLocalFaqs((prev) => prev.filter((f) => f.id !== faq.id));
                 toast.success("FAQ deleted successfully!");
