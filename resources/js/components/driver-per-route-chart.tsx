@@ -203,10 +203,9 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                                 <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                     🤖 AI Insights
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                                <p className={`text-sm whitespace-pre-line ${aiSummary.startsWith("Failed") ? "text-red-500" : "text-gray-600 dark:text-gray-400"}`}>
                                     {aiSummary}
                                 </p>
-                                {aiSummary.startsWith("Failed") && <p className="text-red-500">{aiSummary}</p>}
                             </div>
                         </div>
                     </TabsContent>
