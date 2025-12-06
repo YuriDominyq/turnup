@@ -38,6 +38,11 @@ class AnalyticsAIController extends Controller
             "temperature" => 0.7,
             "max_tokens" => 400
         ]);
+        
+        if ($response->failed()) {
+            \Log::error('OpenAI request failed: ' . $response->body());
+            return response()->json(['summary' => 'AI summary not available at the moment.']);
+        }
 
         $summary = $response->json()['choices'][0]['message']['content'] ?? 'AI summary not available at the moment.';
 
