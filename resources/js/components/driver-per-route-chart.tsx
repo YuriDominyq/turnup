@@ -206,6 +206,7 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                                 <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
                                     {aiSummary}
                                 </p>
+                                {aiSummary.startsWith("Failed") && <p className="text-red-500">{aiSummary}</p>}
                             </div>
                         </div>
                     </TabsContent>
