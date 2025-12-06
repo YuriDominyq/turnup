@@ -24,7 +24,7 @@ class AnalyticsAIController extends Controller
                                1. Which routes are well-staffed
                                2. Which routes are under-staffed
                                3. Any imbalance trends
-                               4. Recommendations to optimize driver allocation"
+                               4. Recommendations to optimize driver"
                     ]
                 ],
                 'temperature' => 0.7,
