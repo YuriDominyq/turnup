@@ -27,9 +27,11 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
             });
     }, []);
 
-    const totalDrivers = data.reduce((sum, item) => sum + item.driverCount, 0);
+    const totalDrivers = Array.isArray(data)
+        ? data.reduce((sum, item) => sum + item.driverCount, 0)
+        : 0;
 
-    const topRoute = data.length > 0
+    const topRoute = Array.isArray(data) && data.length > 0
         ? data.reduce((max, item) => item.driverCount > max.driverCount ? item : max, data[0])
         : null;
 

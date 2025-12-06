@@ -84,7 +84,7 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     {/* Weekly Performance - spans 2 columns on xl screens */}
                     <div className="xl:col-span-2">
-                        <DriversPerRouteChart data={data.driversPerRoute} />
+                        <DriversPerRouteChart data={data.driversPerRoute || []} />
                     </div>
 
                     {/* Driver Status Distribution */}
