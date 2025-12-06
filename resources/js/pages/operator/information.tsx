@@ -12,6 +12,7 @@ import AppLayout from "@/layouts/app-layout";
 import { toast } from "react-toastify";
 import { HelpCircle, Search, Plus, Edit2, Trash2, X, Save } from "lucide-react";
 import { Text } from "@/components/ui/text";
+import { Label } from "@/components/ui/label";
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: "FAQs", href: "/information" }];
 
@@ -136,7 +137,7 @@ export default function Information({ faqs }: InformationProps) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="p-2.5 bg-primary rounded-xl">
-                            <HelpCircle className="h-7 w-7 text-white" />
+                            <HelpCircle className="h-6 w-6 text-primary-foreground" />
                         </div>
                         <div>
                             <Text size="xl" weight="bold" className="text-gray-900 dark:text-gray-100">
@@ -153,8 +154,8 @@ export default function Information({ faqs }: InformationProps) {
                 </div>
 
                 {/* Add/Edit FAQ Form */}
-                <Card className="border-2 shadow-sm dark:border-gray-700">
-                    <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-b dark:border-gray-700">
+                <Card>
+                    <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle className="flex items-center gap-2">
                                 {editingId !== null ? (
@@ -174,7 +175,6 @@ export default function Information({ faqs }: InformationProps) {
                                     variant="ghost"
                                     size="sm"
                                     onClick={resetForm}
-                                    className="text-gray-600 dark:text-gray-400"
                                 >
                                     <X className="h-4 w-4 mr-1" />
                                     Cancel
@@ -185,25 +185,23 @@ export default function Information({ faqs }: InformationProps) {
                     <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <Label>
                                     Question *
-                                </label>
+                                </Label>
                                 <Input
                                     placeholder="Enter the question..."
                                     value={newQuestion}
                                     onChange={(e) => setNewQuestion(e.target.value)}
-                                    className="border-gray-300 dark:border-gray-600"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <Label>
                                     Category *
-                                </label>
+                                </Label>
                                 <Input
                                     placeholder="e.g., Routes, Fares, Schedule"
                                     value={newCategory}
                                     onChange={(e) => setNewCategory(e.target.value)}
-                                    className="border-gray-300 dark:border-gray-600"
                                     list="categories"
                                 />
                                 <datalist id="categories">
@@ -215,26 +213,24 @@ export default function Information({ faqs }: InformationProps) {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Answer *
-                            </label>
+                            </Label>
                             <Textarea
                                 placeholder="Enter the answer..."
                                 value={newAnswer}
                                 onChange={(e) => setNewAnswer(e.target.value)}
-                                className="min-h-[100px] border-gray-300 dark:border-gray-600"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Keywords (comma-separated)
-                            </label>
+                            </Label>
                             <Input
                                 placeholder="e.g., bus, train, payment, schedule"
                                 value={newKeywords}
                                 onChange={(e) => setNewKeywords(e.target.value)}
-                                className="border-gray-300 dark:border-gray-600"
                             />
                             <Text size="xs" className="text-gray-500 dark:text-gray-400">
                                 Add keywords to improve search accuracy
@@ -247,7 +243,7 @@ export default function Information({ faqs }: InformationProps) {
                                 disabled={loading}
                                 className="px-6"
                             >
-                                <Save className="h-4 w-4 mr-2" />
+                                <Save className="h-4 w-4 mr-2 text-primary-foreground" />
                                 {loading
                                     ? editingId !== null
                                         ? "Updating..."
@@ -266,17 +262,17 @@ export default function Information({ faqs }: InformationProps) {
                 </Card>
 
                 {/* Search and List */}
-                <Card className="border-2 shadow-sm dark:border-gray-700">
-                    <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-b dark:border-gray-700">
+                <Card>
+                    <CardHeader>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <CardTitle>FAQ List ({filteredFaqs.length})</CardTitle>
                             <div className="relative w-full sm:w-80">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                <Search />
                                 <Input
                                     placeholder="Search FAQs..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 border-gray-300 dark:border-gray-600"
+                                    className="pl-10"
                                 />
                             </div>
                         </div>
@@ -307,18 +303,18 @@ export default function Information({ faqs }: InformationProps) {
                                                         <div className="flex items-start gap-3">
                                                             <Badge
                                                                 variant="outline"
-                                                                className="mt-0.5 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800"
+                                                                className="mt-0.5"
                                                             >
                                                                 {faq.category}
                                                             </Badge>
                                                             <div className="flex-1">
-                                                                <Text size="base" weight="bold" className="text-gray-900 dark:text-gray-100 leading-relaxed">
+                                                                <Text size="base" weight="bold">
                                                                     {faq.question}
                                                                 </Text>
                                                             </div>
                                                         </div>
 
-                                                        <Text size="sm" className="text-gray-700 dark:text-gray-300 leading-relaxed pl-0">
+                                                        <Text size="sm">
                                                             {faq.answer}
                                                         </Text>
 
@@ -328,7 +324,7 @@ export default function Information({ faqs }: InformationProps) {
                                                                     <Badge
                                                                         key={idx}
                                                                         variant="secondary"
-                                                                        className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                                                                        className="px-2 py-0.5"
                                                                     >
                                                                         {keyword.trim()}
                                                                     </Badge>
@@ -342,7 +338,7 @@ export default function Information({ faqs }: InformationProps) {
                                                             variant="outline"
                                                             size="sm"
                                                             onClick={() => handleEdit(faq)}
-                                                            className="w-full hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-300 dark:hover:border-blue-700"
+                                                            className="w-full"
                                                         >
                                                             <Edit2 className="h-3.5 w-3.5 mr-1.5" />
                                                             Edit
@@ -351,7 +347,7 @@ export default function Information({ faqs }: InformationProps) {
                                                             variant="outline"
                                                             size="sm"
                                                             onClick={() => handleDelete(faq)}
-                                                            className="w-full hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-300 dark:hover:border-red-700 hover:text-red-600 dark:hover:text-red-400"
+                                                            className="w-full"
                                                         >
                                                             <Trash2 className="h-3.5 w-3.5 mr-1.5" />
                                                             Delete
