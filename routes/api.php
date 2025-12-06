@@ -114,6 +114,7 @@ Route::get('/analytics/top-drivers', [TopDriverController::class, 'topDrivers'])
 Route::get('/analytics/drivers-per-route', [DriverPerRouteController::class, 'driversPerRoute']);
 Route::get('/analytics/driver-status', [DriverStatusController::class, 'statusDistribution']);
 Route::get('/admin/kpi', [AdminKPIController::class, 'getKPIData']);
+Route::get('/ai/drivers-summary', [AnalyticsAIController::class, 'summarizeDrivers']);
 
 // Reports
 Route::get('/reports', [ReportsController::class, 'index']);

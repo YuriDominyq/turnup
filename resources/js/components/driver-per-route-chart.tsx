@@ -13,7 +13,7 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
     const [aiSummary, setAiSummary] = useState<string>("Loading AI insights...");
 
     useEffect(() => {
-        fetch("/ai/drivers-summary")
+        fetch("/api/ai/drivers-summary")
             .then(res => res.json())
             .then(data => setAiSummary(data.summary || "No AI insights available."))
             .catch(err => {
