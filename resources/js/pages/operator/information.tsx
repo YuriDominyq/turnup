@@ -74,7 +74,7 @@ export default function Information({ faqs }: InformationProps) {
         };
 
         if (editingId !== null) {
-            Inertia.put(route("faqs.update", editingId), data, {
+            Inertia.put(route("operator.faqs.update", editingId), data, {
                 onSuccess: () => {
                     setLocalFaqs((prev) =>
                         prev.map((f) => (f.id === editingId ? { ...f, ...data } : f))
@@ -89,7 +89,7 @@ export default function Information({ faqs }: InformationProps) {
                 onError: () => setLoading(false),
             });
         } else {
-            Inertia.post(route("faqs.store"), data, {
+            Inertia.post(route("operator.faqs.store"), data, {
                 onSuccess: (page) => {
                     const { faq } = (page.props as unknown) as { faq?: FAQ };
                     if (faq) {
@@ -120,7 +120,7 @@ export default function Information({ faqs }: InformationProps) {
 
     const handleDelete = (faq: FAQ) => {
         if (!confirm("Are you sure you want to delete this FAQ?")) return;
-        Inertia.delete(route("faqs.destroy", faq.id), {
+        Inertia.delete(route("operator.faqs.destroy", faq.id), {
             onSuccess: () => {
                 setLocalFaqs((prev) => prev.filter((f) => f.id !== faq.id));
                 toast.success("FAQ deleted successfully!");
@@ -267,7 +267,7 @@ export default function Information({ faqs }: InformationProps) {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <CardTitle>FAQ List ({filteredFaqs.length})</CardTitle>
                             <div className="relative w-full sm:w-80">
-                                <Search />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
                                 <Input
                                     placeholder="Search FAQs..."
                                     value={searchQuery}
