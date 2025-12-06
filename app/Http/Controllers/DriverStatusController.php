@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use Illuminate\Support\Facades\Http;
 
 class DriverStatusController extends Controller
 {
