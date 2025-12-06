@@ -50,9 +50,9 @@ export default function Dashboard() {
                 ]);
 
                 setData({
-                    topDrivers: topDriversRes.data,
-                    driversPerRoute: driversPerRouteRes.data,
-                    driverStatus: driverStatusRes.data || [],
+                    topDrivers: topDriversRes.data.data ?? topDriversRes.data ?? [],
+                    driversPerRoute: driversPerRouteRes.data.data ?? driversPerRouteRes.data ?? [],
+                    driverStatus: driverStatusRes.data.data ?? [],
                 });
             } catch (err) {
                 console.error("Failed to fetch dashboard data:", err);
