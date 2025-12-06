@@ -74,6 +74,8 @@ Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(
     Route::post('operator/information', [FaqController::class, 'store'])->name('operator.faq.store');
     Route::put('operator/information/{faq}', [FaqController::class, 'update'])->name('operator.faq.update');
     Route::delete('operator/information/{faq}', [FaqController::class, 'destroy'])->name('operator.faq.destroy');
+
+    Route::get('/ai/drivers-summary', [AnalyticsAIController::class, 'summarizeDrivers']);
 });
 
 
