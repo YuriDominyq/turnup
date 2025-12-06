@@ -1,4 +1,5 @@
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis, } from "recharts";
+import { useEffect, useState } from "react";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { TrendingUp, Users, Route } from "lucide-react";
@@ -9,6 +10,18 @@ interface DriversPerRouteChartProps {
 }
 
 export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps) {
+    const [aiSummary, setAiSummary] = useState<string>("Loading AI insights...");
+
+    useEffect(() => {
+        fetch("/ai/drivers-summary")
+            .then(res => res.json())
+            .then(data => setAiSummary(data.summary || "No AI insights available."))
+            .catch(err => {
+                console.error(err);
+                setAiSummary("Failed to load AI insights.");
+            });
+    }, []);
+
     const totalDrivers = data.reduce((sum, item) => sum + item.driverCount, 0);
 
     const topRoute = data.length > 0
@@ -49,7 +62,6 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                         </CardDescription>
                     </div>
 
-                    {/* Summary Stats */}
                     <div className="hidden md:flex gap-4">
                         <div className="text-right">
                             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -79,6 +91,7 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                         </TabsTrigger>
                     </TabsList>
 
+                    {/* Bar Chart Tab */}
                     <TabsContent value="drivers-per-route" className="mt-6">
                         {data.length === 0 ? (
                             <div className="flex items-center justify-center h-64 bg-gray-50 dark:bg-gray-900/50 rounded-xl">
@@ -118,6 +131,7 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                         )}
                     </TabsContent>
 
+                    {/* Insights Tab */}
                     <TabsContent value="insights" className="mt-6">
                         <div className="space-y-4">
                             {topRoute && (
@@ -184,38 +198,15 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                                 </div>
                             </div>
 
-                            {data.length > 0 && (
-                                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                                        Route Breakdown
-                                    </h3>
-                                    <div className="space-y-2">
-                                        {data.slice(0, 5).map((route) => (
-                                            <div key={route.route_name} className="flex items-center justify-between">
-                                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                    {route.route_name}
-                                                </span>
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-32 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                        <div
-                                                            className="bg-emerald-600 dark:bg-emerald-500 h-2 rounded-full"
-                                                            style={{ width: `${(route.driverCount / totalDrivers) * 100}%` }}
-                                                        />
-                                                    </div>
-                                                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 w-8 text-right">
-                                                        {route.driverCount}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {data.length > 5 && (
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 text-center pt-2">
-                                                + {data.length - 5} more routes
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
+                            {/* AI Insights */}
+                            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mt-4">
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                    🤖 AI Insights
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                                    {aiSummary}
+                                </p>
+                            </div>
                         </div>
                     </TabsContent>
                 </Tabs>
