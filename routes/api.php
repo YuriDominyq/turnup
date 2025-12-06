@@ -7,6 +7,7 @@ use App\Http\Controllers\DriverAPIController;
 use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverPerRouteController;
 use App\Http\Controllers\DriverStatusController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RideController;
@@ -29,6 +30,7 @@ Route::put('/commuter/{commuter_id}/change-password', [CommuterController::class
 Route::get('/commuter/routes', [RouteController::class, 'commuterRoutes']);
 Route::post('/fastest-route', [RouteController::class, 'getFastestRoute']);
 Route::post('/commuter/resend-otp', [CommuterController::class, 'resendOtp']);
+Route::get('/faqs', [FaqController::class, 'getFaqsForMobile']);
 
 
 Route::get('/system-logs', function () {

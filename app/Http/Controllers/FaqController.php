@@ -60,4 +60,11 @@ class FaqController extends Controller
 
         return response()->json(['message' => 'FAQ deleted successfully']);
     }
+
+    public function getFaqsForMobile()
+    {
+        return Faq::select('id', 'question', 'answer', 'category', 'keywords')
+                    ->orderByDesc('id')
+                    ->get();
+    }
 }
