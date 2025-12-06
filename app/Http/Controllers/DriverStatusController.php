@@ -43,7 +43,7 @@ class DriverStatusController extends Controller
                             . ". Provide a 3-point summary:
                                 1. Which statuses are dominant
                                 2. Any potential concerns
-                                3. Recommendations to improve driver availability"
+                                3. Recommendations to improve driver"
                     ]
                 ],
                 "temperature" => 0.7,
