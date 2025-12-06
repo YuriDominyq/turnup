@@ -52,7 +52,7 @@ export default function Dashboard() {
                 setData({
                     topDrivers: topDriversRes.data,
                     driversPerRoute: driversPerRouteRes.data,
-                    driverStatus: driverStatusRes.data,
+                    driverStatus: driverStatusRes.data || [],
                 });
             } catch (err) {
                 console.error("Failed to fetch dashboard data:", err);
@@ -89,7 +89,7 @@ export default function Dashboard() {
 
                     {/* Driver Status Distribution */}
                     <div className="xl:col-span-1">
-                        <DriverStatusDistribution data={data.driverStatus} />
+                        <DriverStatusDistribution data={data.driverStatus || []} />
                     </div>
                 </div>
 
