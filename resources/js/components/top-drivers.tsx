@@ -1,20 +1,23 @@
 import { Driver } from "@/types/driver";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Trophy, Star } from "lucide-react";
+import { Trophy, Star, Zap, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
     const [aiSummary, setAiSummary] = useState<string>("Loading AI insights...");
+    const [loadingAi, setLoadingAi] = useState<boolean>(true);
 
     useEffect(() => {
+        setLoadingAi(true);
         fetch("/api/analytics/top-drivers")
             .then(res => res.json())
             .then(data => setAiSummary(data.ai_summary || "No AI insights available."))
             .catch(err => {
                 console.error(err);
                 setAiSummary("Failed to load AI insights.");
-            });
+            })
+            .finally(() => setLoadingAi(false));
     }, []);
     const getRankColor = (index: number) => {
         switch (index) {
@@ -101,16 +104,24 @@ export default function TopDrivers({ drivers }: { drivers: Driver[] }) {
                     );
                 })}
 
-                {aiSummary && (
-                    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                            AI Insights
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                {/* AI Insights */}
+                <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mt-4">
+                    <h3 className="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                        <Zap className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                        AI Insights
+                    </h3>
+
+                    {loadingAi ? (
+                        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Loading AI insights...</span>
+                        </div>
+                    ) : (
+                        <p className={`text-sm whitespace-pre-line ${aiSummary.startsWith("Failed") ? "text-red-500" : "text-gray-600 dark:text-gray-400"}`}>
                             {aiSummary}
                         </p>
-                    </div>
-                )}
+                    )}
+                </div>
             </CardContent>
         </Card>
     );

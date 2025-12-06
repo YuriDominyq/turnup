@@ -1,7 +1,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useEffect, useState } from "react";
-import { Zap } from "lucide-react";
+import { Loader2, Zap } from "lucide-react";
 
 interface Status {
     name: string;
@@ -28,7 +28,6 @@ export default function DriverStatusDistribution({ data }: DriverStatusDistribut
                 const res = await fetch('/api/analytics/driver-status');
                 const data = await res.json();
 
-                // Ensure statusData is always an array
                 setStatusData(Array.isArray(data.data) ? data.data : []);
                 setAiSummary(data.ai_summary || 'No AI insights available.');
             } catch (err) {
@@ -93,14 +92,20 @@ export default function DriverStatusDistribution({ data }: DriverStatusDistribut
                     </>
                 )}
 
+
+                {/* AI Insights */}
                 <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <h3 className="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100 mb-1">
                         <Zap className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                         AI Insights
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
-                        {aiSummary}
-                    </p>
+                    {loading ? (
+                        <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                    ) : (
+                        <p className={`text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line`}>
+                            {aiSummary}
+                        </p>
+                    )}
                 </div>
             </CardContent>
         </Card>

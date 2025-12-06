@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { TrendingUp, Users, Route, Zap } from "lucide-react";
+import { TrendingUp, Users, Route, Zap, Loader2 } from "lucide-react";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 interface DriversPerRouteChartProps {
@@ -11,15 +11,18 @@ interface DriversPerRouteChartProps {
 
 export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps) {
     const [aiSummary, setAiSummary] = useState<string>("Loading AI insights...");
+    const [loadingAi, setLoadingAi] = useState<boolean>(true);
 
     useEffect(() => {
+        setLoadingAi(true);
         fetch("/api/ai/drivers-summary")
             .then(res => res.json())
             .then(data => setAiSummary(data.summary || "No AI insights available."))
             .catch(err => {
                 console.error(err);
                 setAiSummary("Failed to load AI insights.");
-            });
+            })
+            .finally(() => setLoadingAi(false));
     }, []);
 
     const totalDrivers = data.reduce((sum, item) => sum + item.driverCount, 0);
@@ -204,9 +207,17 @@ export default function DriversPerRouteChart({ data }: DriversPerRouteChartProps
                                     <Zap className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                                     AI Insights
                                 </h3>
-                                <p className={`text-sm whitespace-pre-line ${aiSummary.startsWith("Failed") ? "text-red-500" : "text-gray-600 dark:text-gray-400"}`}>
-                                    {aiSummary}
-                                </p>
+
+                                {loadingAi ? (
+                                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        <span>Loading AI insights...</span>
+                                    </div>
+                                ) : (
+                                    <p className={`text-sm whitespace-pre-line ${aiSummary.startsWith("Failed") ? "text-red-500" : "text-gray-600 dark:text-gray-400"}`}>
+                                        {aiSummary}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </TabsContent>
