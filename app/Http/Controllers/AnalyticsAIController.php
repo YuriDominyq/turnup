@@ -8,7 +8,7 @@ class AnalyticsAIController extends Controller
 {
     public function summarizeDrivers()
     {
-        $routesData = Http::get(url('/analytics/drivers-per-route'))->json();
+        $routesData = Http::get(url('/api/analytics/drivers-per-route'))->json();
 
         if (!$routesData) {
             return response()->json(['summary' => 'No route data available.']);
