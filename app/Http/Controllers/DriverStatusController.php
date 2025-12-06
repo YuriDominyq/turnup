@@ -23,7 +23,7 @@ class DriverStatusController extends Controller
                     default => '#d1d5db',
                 },
             ];
-        })->toArray();
+        });
 
         $aiSummary = 'AI summary not available at the moment.';
             $response = Http::withHeaders([
