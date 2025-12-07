@@ -9,6 +9,8 @@ class RouteService
     public static function findFastestRoute($originStopId, $destinationStopId)
     {
         $routes = Route::with('stops')->get();
+        $bestRoute = null;
+        $shortestSegment = PHP_INT_MAX;
 
         foreach ($routes as $route) {
             $stops = $route->stops->sortBy('order');
@@ -18,16 +20,21 @@ class RouteService
             $destIndex = array_search($destinationStopId, $stopIds);
 
             if ($originIndex !== false && $destIndex !== false && $originIndex < $destIndex) {
-                return [
-                    'route_id' => $route->id,
-                    'polyline' => $route->polyline,
-                    'origin_index' => $originIndex,
-                    'destination_index' => $destIndex
-                ];
+                $segmentLength = $destIndex - $originIndex;
+
+                if ($segmentLength < $shortestSegment) {
+                    $shortestSegment = $segmentLength;
+                    $bestRoute = [
+                        'route_id' => $route->id,
+                        'polyline' => $route->polyline,
+                        'origin_index' => $originIndex,
+                        'destination_index' => $destIndex
+                    ];
+                }
             }
         }
 
-        return null;
+        return $bestRoute;
     }
 
     public static function findRouteWithTransfer($originStopId, $destinationStopId)
