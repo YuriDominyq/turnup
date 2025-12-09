@@ -182,7 +182,7 @@ class RouteController extends Controller
             ]);
         }
 
-        return response()->json9([
+        return response()->json([
             'message' => 'No available route found between the specified stops.', 404
         ]);
     }
