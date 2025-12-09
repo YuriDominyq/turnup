@@ -45,11 +45,21 @@ class RouteService
 
         foreach ($originRoutes as $originRoute) {
             foreach ($destinationRoutes as $destRoute) {
+            
+                if (
+                    $originRoute->first_terminal === $destRoute->first_terminal &&
+                    $originRoute->second_terminal === $destRoute->second_terminal
+                ) {
+                    return null;
+                }
+        
                 $originStopIds = $originRoute->stops->pluck('id');
                 $destStopIds = $destRoute->stops->pluck('id');
 
                 $transferStops = $originStopIds->intersect($destStopIds);
+
                 if ($transferStops->isNotEmpty()) {
+
                     $transferStopId = $transferStops->first();
 
                     return [
