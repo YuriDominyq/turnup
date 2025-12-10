@@ -78,6 +78,8 @@ export default function Information({ faqs }: InformationProps) {
 
         if (editingId !== null) {
             Inertia.put(route("operator.faq.update", editingId), data, {
+                preserveState: true,
+                preserveScroll: true,
                 onSuccess: () => {
                     setLocalFaqs((prev) =>
                         prev.map((f) => (f.id === editingId ? { ...f, ...data } : f))
@@ -92,6 +94,8 @@ export default function Information({ faqs }: InformationProps) {
             });
         } else {
             Inertia.post(route("operator.faq.store"), data, {
+                preserveState: true,
+                preserveScroll: true,
                 onSuccess: (page) => {
                     const { faq } = (page.props as unknown) as { faq?: FAQ };
                     if (faq) {
@@ -123,6 +127,8 @@ export default function Information({ faqs }: InformationProps) {
     const handleDeleteConfirmed = () => {
         if (!faqToDelete) return;
         Inertia.delete(route("operator.faq.destroy", faqToDelete.id), {
+            preserveState: true,
+            preserveScroll: true,
             onSuccess: () => {
                 setLocalFaqs((prev) => prev.filter((f) => f.id !== faqToDelete.id));
                 toast.success("FAQ deleted successfully!");
@@ -291,7 +297,7 @@ export default function Information({ faqs }: InformationProps) {
 
             {/* Delete Modal */}
             {faqToDelete && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
                     <Card className="max-w-md w-full p-6">
                         <CardTitle>Confirm Delete</CardTitle>
                         <CardContent className="space-y-4">
@@ -308,7 +314,7 @@ export default function Information({ faqs }: InformationProps) {
 
             {/* Update Confirmation Modal */}
             {faqToUpdate && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
                     <Card className="max-w-md w-full p-6">
                         <CardTitle>Confirm Update</CardTitle>
                         <CardContent className="space-y-4">
