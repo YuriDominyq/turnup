@@ -26,7 +26,7 @@ class FaqController extends Controller
             'question' => 'required|string|max:255',
             'answer'   => 'required|string',
             'category' => 'required|string|max:100',
-            'keywords' => 'required|string'
+            'keywords' => 'nullable|string'
         ]);
 
         $validated['admin_id'] = Auth::id(); 
@@ -38,13 +38,11 @@ class FaqController extends Controller
    
     public function update(Request $request, Faq $faq)
     {
-        $this->authorize('update', $faq); 
-
         $validated = $request->validate([
             'question' => 'required|string|max:255',
             'answer'   => 'required|string',
             'category' => 'required|string|max:100',
-            'keywords' => 'required|string'
+            'keywords' => 'nullable|string'
         ]);
 
         $faq->update($validated);
@@ -54,8 +52,6 @@ class FaqController extends Controller
 
     public function destroy(Faq $faq)
     {
-        $this->authorize('delete', $faq); 
-
         $faq->delete();
 
         return response()->json(['message' => 'FAQ deleted successfully']);
