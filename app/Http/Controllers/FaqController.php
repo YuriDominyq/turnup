@@ -54,7 +54,7 @@ class FaqController extends Controller
     {
         $faq->delete();
 
-        return response()->json(['message' => 'FAQ deleted successfully']);
+        return redirect()->back()->with('success', 'FAQ deleted successfully!')->with('faq', $faq);
     }
 
     public function getFaqsForMobile()
