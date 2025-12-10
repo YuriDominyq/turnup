@@ -33,7 +33,7 @@ class FaqController extends Controller
 
         $faq = Faq::create($validated);
 
-        return back()->with(['faq' => $faq]);
+        return response()->json(['faq' => $faq]);
     }
    
     public function update(Request $request, Faq $faq)
@@ -47,7 +47,7 @@ class FaqController extends Controller
 
         $faq->update($validated);
 
-        return back()->with(['faq' => $faq]);
+        return response()->json(['faq' => $faq]);
     }
 
     public function destroy(Faq $faq)
