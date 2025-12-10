@@ -39,6 +39,9 @@ export default function Information({ faqs }: InformationProps) {
     const [highlightedId, setHighlightedId] = useState<number | null>(null);
     const [newKeywords, setNewKeywords] = useState<string>("");
 
+    const [faqToDelete, setFaqToDelete] = useState<FAQ | null>(null);
+    const [faqToUpdate, setFaqToUpdate] = useState<FAQ | null>(null);
+
     const filteredFaqs = localFaqs
         .filter(
             (f) =>
@@ -49,7 +52,7 @@ export default function Information({ faqs }: InformationProps) {
         )
         .sort((a, b) => b.id - a.id);
 
-    const categories = Array.from(new Set(localFaqs.map(f => f.category)));
+    const categories = Array.from(new Set(localFaqs.map((f) => f.category)));
 
     const resetForm = () => {
         setNewQuestion("");
@@ -83,7 +86,6 @@ export default function Information({ faqs }: InformationProps) {
                     resetForm();
                     toast.success("FAQ updated successfully!");
                     setLoading(false);
-
                     setTimeout(() => setHighlightedId(null), 2000);
                 },
                 onError: () => setLoading(false),
@@ -98,7 +100,6 @@ export default function Information({ faqs }: InformationProps) {
                         resetForm();
                         toast.success("FAQ added successfully!");
                         setLoading(false);
-
                         setTimeout(() => setHighlightedId(null), 2000);
                     } else {
                         setLoading(false);
@@ -115,23 +116,30 @@ export default function Information({ faqs }: InformationProps) {
         setNewAnswer(faq.answer);
         setNewCategory(faq.category);
         setNewKeywords(faq.keywords || "");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const handleDelete = (faq: FAQ) => {
-        if (!confirm("Are you sure you want to delete this FAQ?")) return;
-        Inertia.delete(route("operator.faq.destroy", faq.id), {
+    const confirmDelete = (faq: FAQ) => setFaqToDelete(faq);
+    const handleDeleteConfirmed = () => {
+        if (!faqToDelete) return;
+        Inertia.delete(route("operator.faq.destroy", faqToDelete.id), {
             onSuccess: () => {
-                setLocalFaqs((prev) => prev.filter((f) => f.id !== faq.id));
+                setLocalFaqs((prev) => prev.filter((f) => f.id !== faqToDelete.id));
                 toast.success("FAQ deleted successfully!");
+                setFaqToDelete(null);
             },
         });
+    };
+
+    const confirmUpdate = () => setFaqToUpdate({ id: editingId!, question: newQuestion, answer: newAnswer, category: newCategory, keywords: newKeywords });
+    const handleUpdateConfirmed = () => {
+        handleSave();
+        setFaqToUpdate(null);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="FAQs" />
-
             <div className="space-y-6 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
@@ -153,31 +161,24 @@ export default function Information({ faqs }: InformationProps) {
                     </Badge>
                 </div>
 
-                {/* Add/Edit FAQ Form */}
+                {/* Add/Edit Form */}
                 <Card>
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle className="flex items-center gap-2">
                                 {editingId !== null ? (
                                     <>
-                                        <Edit2 className="h-5 w-5" />
-                                        Edit FAQ
+                                        <Edit2 className="h-5 w-5" /> Edit FAQ
                                     </>
                                 ) : (
                                     <>
-                                        <Plus className="h-5 w-5" />
-                                        Add New FAQ
+                                        <Plus className="h-5 w-5" /> Add New FAQ
                                     </>
                                 )}
                             </CardTitle>
                             {editingId !== null && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={resetForm}
-                                >
-                                    <X className="h-4 w-4 mr-1" />
-                                    Cancel
+                                <Button variant="ghost" size="sm" onClick={resetForm}>
+                                    <X className="h-4 w-4 mr-1" /> Cancel
                                 </Button>
                             )}
                         </div>
@@ -185,78 +186,43 @@ export default function Information({ faqs }: InformationProps) {
                     <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label>
-                                    Question *
-                                </Label>
-                                <Input
-                                    placeholder="Enter the question..."
-                                    value={newQuestion}
-                                    onChange={(e) => setNewQuestion(e.target.value)}
-                                />
+                                <Label>Question *</Label>
+                                <Input value={newQuestion} onChange={(e) => setNewQuestion(e.target.value)} placeholder="Enter the question..." />
                             </div>
                             <div className="space-y-2">
-                                <Label>
-                                    Category *
-                                </Label>
+                                <Label>Category *</Label>
                                 <Input
-                                    placeholder="e.g., Routes, Fares, Schedule"
                                     value={newCategory}
                                     onChange={(e) => setNewCategory(e.target.value)}
+                                    placeholder="e.g., Routes, Fares, Schedule"
                                     list="categories"
                                 />
                                 <datalist id="categories">
-                                    {categories.map(cat => (
+                                    {categories.map((cat) => (
                                         <option key={cat} value={cat} />
                                     ))}
                                 </datalist>
                             </div>
                         </div>
-
                         <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Answer *
-                            </Label>
-                            <Textarea
-                                placeholder="Enter the answer..."
-                                value={newAnswer}
-                                onChange={(e) => setNewAnswer(e.target.value)}
-                            />
+                            <Label>Answer *</Label>
+                            <Textarea value={newAnswer} onChange={(e) => setNewAnswer(e.target.value)} placeholder="Enter the answer..." />
                         </div>
-
                         <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Keywords (comma-separated)
-                            </Label>
-                            <Input
-                                placeholder="e.g., bus, train, payment, schedule"
-                                value={newKeywords}
-                                onChange={(e) => setNewKeywords(e.target.value)}
-                            />
-                            <Text size="xs" className="text-gray-500 dark:text-gray-400">
-                                Add keywords to improve search accuracy
-                            </Text>
+                            <Label>Keywords (comma-separated)</Label>
+                            <Input value={newKeywords} onChange={(e) => setNewKeywords(e.target.value)} placeholder="e.g., bus, train, payment" />
                         </div>
-
                         <div className="flex gap-2 pt-2">
-                            <Button
-                                onClick={handleSave}
-                                disabled={loading}
-                                className="px-6"
-                            >
-                                <Save className="h-4 w-4 mr-2 text-primary-foreground" />
-                                {loading
-                                    ? editingId !== null
-                                        ? "Updating..."
-                                        : "Adding..."
-                                    : editingId !== null
-                                        ? "Update FAQ"
-                                        : "Add FAQ"}
-                            </Button>
-                            {editingId !== null && (
-                                <Button variant="outline" onClick={resetForm}>
-                                    Cancel
+                            {editingId !== null ? (
+                                <Button onClick={confirmUpdate} disabled={loading}>
+                                    <Save className="h-4 w-4 mr-2" /> Update FAQ
+                                </Button>
+                            ) : (
+                                <Button onClick={handleSave} disabled={loading}>
+                                    <Save className="h-4 w-4 mr-2" /> Add FAQ
                                 </Button>
                             )}
+                            {editingId !== null && <Button variant="outline" onClick={resetForm}>Cancel</Button>}
                         </div>
                     </CardContent>
                 </Card>
@@ -268,12 +234,7 @@ export default function Information({ faqs }: InformationProps) {
                             <CardTitle>FAQ List ({filteredFaqs.length})</CardTitle>
                             <div className="relative w-full sm:w-80">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-                                <Input
-                                    placeholder="Search FAQs..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10"
-                                />
+                                <Input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search FAQs..." className="pl-10" />
                             </div>
                         </div>
                     </CardHeader>
@@ -290,67 +251,31 @@ export default function Information({ faqs }: InformationProps) {
                             <ScrollArea className="h-[600px] pr-4">
                                 <div className="space-y-3">
                                     {filteredFaqs.map((faq) => (
-                                        <Card
-                                            key={faq.id}
-                                            className={`transition-all duration-300 hover:shadow-md ${highlightedId === faq.id
-                                                ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 shadow-md"
-                                                : "border-gray-200 dark:border-gray-700"
-                                                }`}
-                                        >
+                                        <Card key={faq.id} className={`transition-all duration-300 hover:shadow-md ${highlightedId === faq.id ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 shadow-md" : "border-gray-200 dark:border-gray-700"}`}>
                                             <CardContent className="p-5">
                                                 <div className="flex justify-between items-start gap-4">
                                                     <div className="flex-1 space-y-3">
                                                         <div className="flex items-start gap-3">
-                                                            <Badge
-                                                                variant="outline"
-                                                                className="mt-0.5"
-                                                            >
-                                                                {faq.category}
-                                                            </Badge>
+                                                            <Badge variant="outline" className="mt-0.5">{faq.category}</Badge>
                                                             <div className="flex-1">
-                                                                <Text size="base" weight="bold">
-                                                                    {faq.question}
-                                                                </Text>
+                                                                <Text size="base" weight="bold">{faq.question}</Text>
                                                             </div>
                                                         </div>
-
-                                                        <Text size="sm">
-                                                            {faq.answer}
-                                                        </Text>
-
+                                                        <Text size="sm">{faq.answer}</Text>
                                                         {faq.keywords && (
                                                             <div className="flex flex-wrap gap-1.5 pt-1">
-                                                                {faq.keywords.split(',').map((keyword, idx) => (
-                                                                    <Badge
-                                                                        key={idx}
-                                                                        variant="secondary"
-                                                                        className="px-2 py-0.5"
-                                                                    >
-                                                                        {keyword.trim()}
-                                                                    </Badge>
+                                                                {faq.keywords.split(",").map((k, i) => (
+                                                                    <Badge key={i} variant="secondary" className="px-2 py-0.5">{k.trim()}</Badge>
                                                                 ))}
                                                             </div>
                                                         )}
                                                     </div>
-
                                                     <div className="flex flex-col gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleEdit(faq)}
-                                                            className="w-full"
-                                                        >
-                                                            <Edit2 className="h-3.5 w-3.5 mr-1.5" />
-                                                            Edit
+                                                        <Button variant="outline" size="sm" onClick={() => handleEdit(faq)} className="w-full">
+                                                            <Edit2 className="h-3.5 w-3.5 mr-1.5" /> Edit
                                                         </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleDelete(faq)}
-                                                            className="w-full"
-                                                        >
-                                                            <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-                                                            Delete
+                                                        <Button variant="outline" size="sm" onClick={() => confirmDelete(faq)} className="w-full">
+                                                            <Trash2 className="h-3.5 w-3.5 mr-1.5" /> Delete
                                                         </Button>
                                                     </div>
                                                 </div>
@@ -363,6 +288,40 @@ export default function Information({ faqs }: InformationProps) {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Delete Modal */}
+            {faqToDelete && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <Card className="max-w-md w-full p-6">
+                        <CardTitle>Confirm Delete</CardTitle>
+                        <CardContent className="space-y-4">
+                            <Text>Are you sure you want to delete the FAQ:</Text>
+                            <Text weight="bold">{faqToDelete.question}</Text>
+                            <div className="flex justify-end gap-2">
+                                <Button variant="outline" onClick={() => setFaqToDelete(null)}>Cancel</Button>
+                                <Button variant="destructive" onClick={handleDeleteConfirmed}>Delete</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
+
+            {/* Update Confirmation Modal */}
+            {faqToUpdate && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <Card className="max-w-md w-full p-6">
+                        <CardTitle>Confirm Update</CardTitle>
+                        <CardContent className="space-y-4">
+                            <Text>Are you sure you want to update this FAQ?</Text>
+                            <Text weight="bold">{faqToUpdate.question}</Text>
+                            <div className="flex justify-end gap-2">
+                                <Button variant="outline" onClick={() => setFaqToUpdate(null)}>Cancel</Button>
+                                <Button onClick={handleUpdateConfirmed}>Update</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
         </AppLayout>
     );
 }
