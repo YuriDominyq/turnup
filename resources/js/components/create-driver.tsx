@@ -6,9 +6,9 @@ import { NewDriver } from '@/types/driver';
 import { StepIndicator } from './step-indicator';
 import { PersonalInfoStep } from './driver-form/personal-info';
 import { VehicleInfoStep } from './driver-form/vehicle-info';
-import { DocumentsStep } from './driver-form/document-info';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ConfirmationStep } from './driver-form/document-info';
 
 interface CreateDriverDialogProps {
     onCreateDriver: (driver: NewDriver) => void;
@@ -42,30 +42,17 @@ export const CreateDriverDialog: React.FC<CreateDriverDialogProps> = ({ onCreate
             formData.append('license_plate', driver.licensePlate);
             formData.append('route_id', driver.route);
 
-            if (driver.documents?.driverLicense) {
-                formData.append('driver_license', driver.documents.driverLicense);
-            }
-            if (driver.documents?.vehicleRegistration) {
-                formData.append('vehicle_registration', driver.documents.vehicleRegistration);
-            }
-            if (driver.documents?.insurance) {
-                formData.append('insurance', driver.documents.insurance);
-            }
-            if (driver.documents?.franchise) {
-                formData.append('franchise', driver.documents.franchise);
-            }
-
             await axios.post('/operator/driver', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            toast.success('Driver Creation Successfully');
+            toast.success('Driver Created Successfully');
             onCreateDriver(driver);
             setIsOpen(false);
             setCurrentStep(0);
         } catch (error) {
             console.error(error);
-            toast.error('Error Driver Creation');
+            toast.error('Error Creating Driver');
         }
     };
 
@@ -97,7 +84,7 @@ export const CreateDriverDialog: React.FC<CreateDriverDialogProps> = ({ onCreate
             case 1:
                 return <VehicleInfoStep newDriver={newDriver} setNewDriver={setNewDriver} />;
             case 2:
-                return <DocumentsStep newDriver={newDriver} setNewDriver={setNewDriver} />;
+                return <ConfirmationStep newDriver={newDriver} onRegister={() => handleCreateDriver(newDriver)} />;
             default:
                 return null;
         }
@@ -125,7 +112,7 @@ export const CreateDriverDialog: React.FC<CreateDriverDialogProps> = ({ onCreate
 
                 <div className="flex justify-between pt-4">
                     <div>
-                        {currentStep > 0 && (
+                        {currentStep > 0 && currentStep < 2 && (
                             <Button variant="outline" onClick={prevStep}>
                                 <ArrowLeft className="h-4 w-4 mr-2" />
                                 Previous
@@ -138,17 +125,10 @@ export const CreateDriverDialog: React.FC<CreateDriverDialogProps> = ({ onCreate
                             Cancel
                         </Button>
 
-                        {currentStep < 2 ? (
-                            <Button
-                                onClick={nextStep}
-                                disabled={!isStepValid(currentStep)}
-                            >
+                        {currentStep < 2 && (
+                            <Button onClick={nextStep} disabled={!isStepValid(currentStep)}>
                                 Next
                                 <ArrowRight className="h-4 w-4 ml-2" />
-                            </Button>
-                        ) : (
-                            <Button onClick={() => handleCreateDriver(newDriver)}>
-                                Register Driver
                             </Button>
                         )}
                     </div>
