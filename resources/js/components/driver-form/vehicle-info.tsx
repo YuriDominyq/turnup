@@ -12,8 +12,6 @@ interface VehicleInfoStepProps {
 }
 
 interface Errors {
-    vehicleType?: string;
-    licensePlate?: string;
     route?: string;
 }
 
@@ -53,7 +51,7 @@ export const VehicleInfoStep: React.FC<VehicleInfoStepProps> = ({ newDriver, set
         <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
                 <Car className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-semibold">Vehicle & Route Details</h3>
+                <h3 className="text-lg font-semibold">Route Details</h3>
             </div>
 
             <div className="space-y-2">

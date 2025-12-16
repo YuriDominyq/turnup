@@ -297,13 +297,15 @@ export default function Welcome() {
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium text-black dark:text-white">Operators</p>
-                                                <p className="text-xs text-gray-700 dark:text-gray-300">Fleet managers who create driver accounts and driver tracking</p>
+                                                <p className="text-xs text-gray-700 dark:text-gray-300">
+                                                    Users who create and supervise driver accounts, and track driver activity
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4 p-3 rounded-lg bg-gray-100/60 dark:bg-gray-900/60 border border-gray-300 dark:border-gray-700">
                                         <p className="text-xs text-gray-700 dark:text-gray-300">
-                                            <strong>Chain of Management:</strong> Super Admins manage the system and create Operators. Operators act as fleet managers who create and supervise Driver accounts and tracking.
+                                            <strong>Chain of Management:</strong> Super Admins manage the system and create Operators. Operators are responsible for creating, supervising, and tracking Driver accounts. They ensure drivers are registered and monitored but do not manage fleet operations directly.
                                         </p>
                                     </div>
                                 </div>

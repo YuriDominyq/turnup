@@ -69,7 +69,7 @@ export const CreateDriverDialog: React.FC<CreateDriverDialogProps> = ({ onCreate
             case 0:
                 return newDriver.firstName && newDriver.lastName && newDriver.email && newDriver.phone && newDriver.password && newDriver.confirmPassword;
             case 1:
-                return newDriver.vehicleType && newDriver.licensePlate && newDriver.route;
+                return !!newDriver.route;
             case 2:
                 return true;
             default:
