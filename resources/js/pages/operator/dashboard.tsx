@@ -79,58 +79,52 @@ export default function Dashboard() {
                     </Alert>
                 )}
 
-                {/* Charts and Analytics */}
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                    {/* Weekly Performance - spans 2 columns on xl screens */}
-                    <div className="xl:col-span-2 bg-card rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
-                        <div className="mb-4">
-                            <h3 className="text-lg font-semibold">Drivers Per Route</h3>
-                            <p className="text-sm text-muted-foreground">Distribution across all routes</p>
+                {/* Charts Section - Full width stacked */}
+                <div className="grid grid-cols-1 gap-6">
+                    {/* Drivers Per Route */}
+                    <div className="bg-card rounded-xl border p-6">
+                        <h3 className="text-lg font-semibold mb-2">Drivers Per Route</h3>
+                        <p className="text-sm text-muted-foreground mb-4">Distribution across all routes</p>
+                        <div className="overflow-x-auto">
+                            <DriversPerRouteChart data={data.driversPerRoute || []} />
                         </div>
-                        <DriversPerRouteChart data={data.driversPerRoute || []} />
                     </div>
 
-                    {/* Driver Status Distribution */}
-                    <div className="xl:col-span-1 bg-card rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
-                        <div className="mb-4">
-                            <h3 className="text-lg font-semibold">Driver Status</h3>
-                            <p className="text-sm text-muted-foreground">Current availability</p>
-                        </div>
+                    {/* Driver Status */}
+                    <div className="bg-card rounded-xl border p-6">
+                        <h3 className="text-lg font-semibold mb-2">Driver Status</h3>
+                        <p className="text-sm text-muted-foreground mb-4">Current availability</p>
                         <DriverStatusDistribution data={data.driverStatus || []} />
                     </div>
                 </div>
 
                 {/* Top Drivers Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 xl:col-span-3">
-                        {loading ? (
-                            <div className="flex items-center justify-center h-64 bg-card rounded-xl shadow-sm border">
-                                <div className="text-center">
-                                    <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-3" />
-                                    <p className="text-sm font-medium">Loading top drivers...</p>
-                                    <p className="text-xs text-muted-foreground mt-1">This won't take long</p>
-                                </div>
+                <div className="grid grid-cols-1 gap-6">
+                    {loading ? (
+                        <div className="flex items-center justify-center h-64 bg-card rounded-xl shadow-sm border">
+                            <div className="text-center">
+                                <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-3" />
+                                <p className="text-sm font-medium">Loading top drivers...</p>
+                                <p className="text-xs text-muted-foreground mt-1">This won't take long</p>
                             </div>
-                        ) : data.topDrivers.length === 0 ? (
-                            <div className="flex items-center justify-center h-64 bg-card rounded-xl shadow-sm border">
-                                <div className="text-center">
-                                    <div className="bg-muted rounded-full p-4 inline-block mb-3">
-                                        <AlertCircle className="h-10 w-10 text-muted-foreground" />
-                                    </div>
-                                    <p className="text-sm font-medium">No driver data available</p>
-                                    <p className="text-xs text-muted-foreground mt-1">Check back later for updates</p>
+                        </div>
+                    ) : data.topDrivers.length === 0 ? (
+                        <div className="flex items-center justify-center h-64 bg-card rounded-xl shadow-sm border">
+                            <div className="text-center">
+                                <div className="bg-muted rounded-full p-4 inline-block mb-3">
+                                    <AlertCircle className="h-10 w-10 text-muted-foreground" />
                                 </div>
+                                <p className="text-sm font-medium">No driver data available</p>
+                                <p className="text-xs text-muted-foreground mt-1">Check back later for updates</p>
                             </div>
-                        ) : (
-                            <div className="bg-card rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold">Top Performing Drivers</h3>
-                                    <p className="text-sm text-muted-foreground">Highest rated drivers this period</p>
-                                </div>
-                                <TopDrivers drivers={data.topDrivers} />
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <div className="bg-card rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
+                            <h3 className="text-lg font-semibold mb-2">Top Performing Drivers</h3>
+                            <p className="text-sm text-muted-foreground mb-4">Highest rated drivers this period</p>
+                            <TopDrivers drivers={data.topDrivers} />
+                        </div>
+                    )}
                 </div>
             </div>
         </AppLayout>
