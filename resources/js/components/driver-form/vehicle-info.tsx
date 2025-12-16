@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertCircle, Car } from 'lucide-react';
@@ -33,20 +32,6 @@ export const VehicleInfoStep: React.FC<VehicleInfoStepProps> = ({ newDriver, set
         let error = '';
 
         switch (field) {
-            case 'vehicleType':
-                if (!value || value.trim() === '') {
-                    error = 'Please select a jeepney type.';
-                }
-                break;
-
-            case 'licensePlate':
-                if (!value.trim()) {
-                    error = 'License plate is required.';
-                } else if (!/^[A-Z]{2,3}-?\d{3,4}$/i.test(value.replace(/\s+/g, ''))) {
-                    error = 'Invalid license plate format.';
-                }
-                break;
-
             case 'route':
                 if (!value || value.trim() === '') {
                     error = 'Please select a route assignment.';
@@ -56,21 +41,6 @@ export const VehicleInfoStep: React.FC<VehicleInfoStepProps> = ({ newDriver, set
 
         return error;
     };
-
-    const handleBlur = (field: string) => {
-        setTouched({ ...touched, [field]: true });
-        const error = validateField(field, newDriver[field as keyof NewDriver] as string);
-        setErrors({ ...errors, [field]: error });
-    };
-
-    const handleInputChange = (field: string, value: string) => {
-        setNewDriver({ ...newDriver, [field]: value });
-
-        if (touched[field]) {
-            const error = validateField(field, value);
-            setErrors({ ...errors, [field]: error });
-        }
-    }
 
     const handleSelectChange = (field: string, value: string) => {
         setNewDriver({ ...newDriver, [field]: value });
@@ -84,56 +54,6 @@ export const VehicleInfoStep: React.FC<VehicleInfoStepProps> = ({ newDriver, set
             <div className="flex items-center gap-2 mb-4">
                 <Car className="h-5 w-5 text-primary" />
                 <h3 className="text-lg font-semibold">Vehicle & Route Details</h3>
-            </div>
-
-            <div className="space-y-2">
-                <Label htmlFor="vehicleType">Jeepney Type *</Label>
-                <Select
-                    value={newDriver.vehicleType}
-                    onValueChange={(value) => handleSelectChange('vehicleType', value)}
-                >
-                    <SelectTrigger
-                        className={errors.vehicleType && touched.vehicleType ? 'border-red-500 focus:ring-red-500' : ''}
-                    >
-                        <SelectValue placeholder="Select jeepney type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="modern-jeepney">Modern Jeepney (Electric)</SelectItem>
-                        <SelectItem value="euro4-jeepney">Euro 4 Jeepney</SelectItem>
-                        <SelectItem value="mini-bus">Mini Bus</SelectItem>
-                    </SelectContent>
-                </Select>
-
-                {errors.vehicleType && touched.vehicleType && (
-                    <div className='flex items-center gap-1 text-sm text-red-500'>
-                        <AlertCircle className='h-3 w-3' />
-                        <span>{errors.vehicleType}</span>
-                    </div>
-                )}
-            </div>
-
-            <div className="space-y-2">
-                <Label htmlFor="licensePlate">License Plate *</Label>
-                <Input
-                    id="licensePlate"
-                    value={newDriver.licensePlate}
-                    onChange={(e) => handleInputChange('licensePlate', e.target.value.toUpperCase())}
-                    onBlur={() => handleBlur('licensePlate')}
-                    placeholder="BAC-1234"
-                    maxLength={8}
-                    className={errors.licensePlate && touched.licensePlate ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                />
-                {errors.licensePlate && touched.licensePlate && (
-                    <div className='flex items-center gap-1 text-sm text-red-500'>
-                        <AlertCircle className='h-3 w-3' />
-                        <span>{errors.licensePlate}</span>
-                    </div>
-                )}
-                {!errors.licensePlate && (
-                    <p className='text-xs text-muted-foreground'>
-                        Format: ABC-1234 or AB-1234
-                    </p>
-                )}
             </div>
 
             <div className="space-y-2">
