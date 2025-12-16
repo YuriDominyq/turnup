@@ -1,4 +1,4 @@
-import { Edit, Eye, Mail, MapPin, Phone, Star, Trash2, Users } from "lucide-react";
+import { Edit, Eye, Mail, MapPin, Phone, Trash2, Users } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
@@ -105,18 +105,6 @@ export default function DriverList({ filteredDrivers, getStatusBadge, onUpdateDr
                             </div>
 
                             <div className="flex items-center gap-6">
-                                <div className="text-right">
-                                    <div className="text-sm font-medium">{driver.license_plate}</div>
-                                </div>
-
-                                {driver.status === 'active' && (
-                                    <div className="text-right">
-                                        <div className="flex items-center gap-1">
-                                            <Star className="h-3 w-3 text-yellow-500" />
-                                            <span className="text-sm font-medium">{driver.rating}</span>
-                                        </div>
-                                    </div>
-                                )}
 
                                 <div className="flex items-center gap-1">
                                     <Button variant="ghost" size="sm">
