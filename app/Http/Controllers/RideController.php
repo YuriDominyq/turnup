@@ -121,4 +121,28 @@ class RideController extends Controller
 
         return response()->json($ride);    
     }
+    
+    /**
+     * Cancel a ride
+     */
+    public function cancelRide($ride_id)
+    {
+        $ride = Ride::find($ride_id);
+
+        if (!$ride) {
+            return response()->json(['message' => 'Ride not found'], 404);
+        }
+
+        if ($ride->status === 'completed') {
+            return response()->json(['message' => 'Cannot cancel a completed ride'], 400);
+        }
+
+        $ride->status = 'cancelled';
+        $ride->save();
+
+        return response()->json([
+            'message' => 'Ride cancelled successfully',
+            'ride' => $ride->load(['driver', 'commuter', 'route', 'startStop', 'endStop'])
+        ]);
+    }
 }

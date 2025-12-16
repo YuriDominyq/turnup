@@ -100,6 +100,7 @@ Route::prefix('rides')->group(function () {
     Route::get('/{ride_id}', [RideController::class, 'show']);
     Route::post('/start', [RideController::class, 'startRide']);
     Route::put('/end/{ride_id}', [RideController::class, 'endRide']);
+    Route::put('/rides/cancel/{ride_id}', [RideController::class, 'cancelRide']);
 });
 
 // Feedback
