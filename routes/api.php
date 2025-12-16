@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::post('/nearby-stop', function(Request $request){
     $lat = $request->lat;
     $lng = $request->lng;
-    $radius = 0.08;
+    $radius = 0.5;
 
     $nearbyStops = Stop::select('*')
         ->selectRaw("(6371 * acos(
