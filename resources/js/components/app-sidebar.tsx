@@ -26,11 +26,6 @@ export function AppSidebar() {
             icon: MapIcon,
         },
         {
-            title: 'Operators',
-            href: '/admin/operators',
-            icon: MapIcon,
-        },
-        {
             title: 'Commuter FAQs',
             href: '/admin/faq',
             icon: HelpCircleIcon,
