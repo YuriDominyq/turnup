@@ -32,19 +32,13 @@ export function AppSidebar() {
         },
     ];
 
-    const dashboardLink =
-        role === 'superadmin'
-            ? '/admin/dashboard'
-            : role === 'operator'
-                ? '/operator/dashboard'
-                : '/';
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboardLink} prefetch>
+                            <Link href="/admin/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
