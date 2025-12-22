@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import axios from "axios";
 import { SystemLog } from "@/types/systemlog";
 import FullLogsModal from "./full-logs-modal";
-import TabsReports from "../tabs-reports";
 
 type TabType = 'overview' | 'checkins' | 'terminals' | 'drivers' | 'reports';
 
@@ -23,7 +22,6 @@ export default function TabAnalytics() {
 
     const tabs: { id: TabType; label: string }[] = [
         { id: 'overview', label: 'Overview' },
-        { id: 'reports', label: 'Reports' },
     ];
 
     const fetchLogs = async () => {
@@ -217,8 +215,6 @@ export default function TabAnalytics() {
                         </Card>
                     </div>
                 )}
-
-                {activeTab === 'reports' && <TabsReports />}
 
                 {isModalOpen && <FullLogsModal logs={logs} onClose={() => setIsModalOpen(false)} />}
             </div>
