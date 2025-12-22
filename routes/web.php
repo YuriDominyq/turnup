@@ -39,12 +39,10 @@ Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->grou
 });
 
 Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
-    Route::get('admin/operators', [OperatorController::class, 'index'])->name('admin.operators.index');
-    Route::get('admin/operators/create', [OperatorController::class, 'create'])->name('admin.operators.create');
-    Route::post('admin/operators', [OperatorController::class, 'store'])->name('admin.operators.store');
-    Route::get('admin/operators/{operator}/edit', [OperatorController::class, 'edit'])->name('admin.operators.edit');
-    Route::put('admin/operators/{operator}', [OperatorController::class, 'update'])->name('admin.operators.update');
-    Route::delete('admin/operators/{operator}', [OperatorController::class, 'destroy'])->name('admin.operators.destroy');
+    Route::get('admin/faq', [FaqController::class, 'index'])->name('admin.faq.index');
+    Route::post('admin/faq', [FaqController::class, 'store'])->name('admin.faq.store');
+    Route::put('admin/faq/{faq}', [FaqController::class, 'update'])->name('admin.faq.update');
+    Route::delete('admin/faq/{faq}', [FaqController::class, 'destroy'])->name('admin.faq.destroy');
 });
 
 Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(function () {
@@ -69,11 +67,6 @@ Route::middleware(['auth', 'verified', 'role:operator', NoCache::class])->group(
     })->name('operator.problems');
 
     Route::get('operator/checkin', [DriverCheckInController::class, 'indexWeb'])->name('operator.checkin');
-
-    Route::get('operator/information', [FaqController::class, 'index'])->name('operator.faq.index');
-    Route::post('operator/information', [FaqController::class, 'store'])->name('operator.faq.store');
-    Route::put('operator/information/{faq}', [FaqController::class, 'update'])->name('operator.faq.update');
-    Route::delete('operator/information/{faq}', [FaqController::class, 'destroy'])->name('operator.faq.destroy');
 });
 
 

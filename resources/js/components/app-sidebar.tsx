@@ -3,64 +3,34 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, BarChart3, HelpCircle, Map, MapIcon, MessageSquare, Users } from 'lucide-react';
+import { BarChart3, HelpCircleIcon, MapIcon, } from 'lucide-react';
 import AppLogo from './app-logo';
 import { AppVersion } from './app-version';
 
 export function AppSidebar() {
 
     const { auth } = usePage().props as { auth?: { user?: { role?: string } } };
-
     const role = auth?.user?.role ?? null;
 
-    const mainNavItems: NavItem[] = role === 'superadmin' ? [
+    if (role !== 'superadmin') return null;
+
+    const mainNavItems: NavItem[] = [
         {
             title: 'Dashboard',
             href: '/admin/dashboard',
             icon: BarChart3,
         },
         {
-            title: 'Operators',
-            href: '/admin/operators',
-            icon: Users,
-        },
-        {
             title: 'Map Route',
             href: '/admin/maproute',
             icon: MapIcon,
         },
-    ] : role === 'operator' ? [
         {
-            title: 'Dashboard',
-            href: '/operator/dashboard',
-            icon: BarChart3,
+            title: 'Commuter FAQs',
+            href: '/admin/faq',
+            icon: HelpCircleIcon,
         },
-        {
-            title: 'Driver',
-            href: '/operator/driver',
-            icon: Users,
-        },
-        {
-            title: 'Driver Tracking',
-            href: '/operator/map',
-            icon: Map,
-        },
-        {
-            title: 'Commuter Feedbacks',
-            href: '/operator/problems',
-            icon: MessageSquare,
-        },
-        {
-            title: 'Check-ins',
-            href: '/operator/checkin',
-            icon: Activity,
-        },
-        {
-            title: 'Chatbot FAQs',
-            href: '/operator/information',
-            icon: HelpCircle,
-        },
-    ] : [];
+    ];
 
     const dashboardLink =
         role === 'superadmin'

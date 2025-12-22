@@ -15,7 +15,7 @@ class FaqController extends Controller
                     ->orderByDesc('id')
                     ->get();
 
-        return Inertia::render('operator/information', [
+        return Inertia::render('admin/faq', [
             'faqs' => $faqs,
         ]);
     }
