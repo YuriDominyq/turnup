@@ -15,8 +15,15 @@ class FaqController extends Controller
                     ->orderByDesc('id')
                     ->get();
 
+        $user = Auth::user();            
+
         return Inertia::render('admin/faq', [
             'faqs' => $faqs,
+            'auth' => [
+            'user' => $user ? $user->append('full_photo_url')->only([
+                'id', 'first_name', 'last_name', 'email', 'role', 'photo_url', 'full_photo_url'
+                ]) : null,
+            ],
         ]);
     }
 
