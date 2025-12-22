@@ -5,6 +5,7 @@ use App\Http\Controllers\DriverCheckInController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MapRouteController;
+use App\Http\Controllers\OperatorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RouteController;
@@ -32,6 +33,10 @@ Route::get('/version', function () {
 Route::middleware(['auth', 'verified', 'role:superadmin', NoCache::class])->group(function () {
     Route::get('admin/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
+
+        
+    Route::get('admin/operators', [OperatorController::class, 'index'])
+        ->name('admin.operators.index');
 
     Route::get('admin/maproute', [MapRouteController::class, 'index'])
         ->name('admin.maproute');
