@@ -97,7 +97,7 @@ export default function Welcome() {
                             </p>
                         </div>
 
-                        <div className='grid gap-8 md:grid-cols-1 lg:grid-cols-3'>
+                        <div className='grid gap-8 md:grid-cols-1 lg:grid-cols-2'>
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
